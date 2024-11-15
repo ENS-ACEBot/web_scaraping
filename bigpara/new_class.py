@@ -1,0 +1,72 @@
+from datetime import datetime
+# Description: This file contains the class for the news object
+# title, content, date, source, source_url
+class News:
+    def __init__(self, title,  source, news_url,content=None,date_time=None):
+        self.title = title  # string
+        self.content = content # string 
+        self.date_time = date_time # datetime
+        self.source = source # string
+        self.news_url = news_url # string
+    
+    def __str__(self) -> str:
+        return f"{self.title} - {self.date_time} - {self.source}"
+    
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "content": self.content,
+            "date_time": self.date_time.strftime('%Y-%m-%d %H:%M') if self.date_time else None,
+            "source": self.source,
+            "news_url": self.news_url
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        # Parse `date_time` if it exists in `data`
+        date_time = data.get("date_time")
+        if date_time:
+            # Parse date_time string to a datetime object, assuming a specific format
+            date_time = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
+
+        # Return an instance of `News` with data from the dictionary
+        return cls(
+            title=data.get("title"),
+            content=data.get("content"),
+            date_time=date_time,
+            source=data.get("source"),
+            news_url=data.get("news_url")
+        )   
+
+    #   date :23.10.2024
+    #   time :12:46
+    def date_time_to_dateTime(date,time):
+        date_str = date+" "+time
+        date_format = '%d.%m.%Y %H:%M'
+        return datetime.strptime(date_str, date_format)
+    
+        # Comparison operators with type checking
+    def __eq__(self, other):
+        if not isinstance(other, News):
+            raise TypeError("Cannot compare News with non-News instance")
+        return self.date_time == other.date_time
+
+    def __lt__(self, other):
+        if not isinstance(other, News):
+            raise TypeError("Cannot compare News with non-News instance")
+        return self.date_time < other.date_time
+
+    def __le__(self, other):
+        if not isinstance(other, News):
+            raise TypeError("Cannot compare News with non-News instance")
+        return self.date_time <= other.date_time
+
+    def __gt__(self, other):
+        if not isinstance(other, News):
+            raise TypeError("Cannot compare News with non-News instance")
+        return self.date_time > other.date_time
+
+    def __ge__(self, other):
+        if not isinstance(other, News):
+            raise TypeError("Cannot compare News with non-News instance")
+        return self.date_time >= other.date_time
