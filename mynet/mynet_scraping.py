@@ -140,10 +140,10 @@ def fetch_all_news_from_json(db_file):
         return []
 
 
-DB_FILE = "mynet_news.json"
+DB_FILE = "mynet_news3.json"
 NEWS_SOURCE = "MYNET"
 # Example usage:
-start_date = "25/12/2012"
+start_date = "25/12/2024"
 end_date = "26/12/2024"
 urls = generate_urls(start_date, end_date)
 print("Urls to scrape:")

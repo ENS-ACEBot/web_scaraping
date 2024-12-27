@@ -1,5 +1,7 @@
 from datetime import datetime
 
+# Description: This file contains the class for the news object
+# title, content, date, source, source_url
 class News:
     def __init__(self, title, source, news_url, content=None, date_time=None):
         self.title = title  # string
@@ -37,7 +39,8 @@ class News:
             news_url=data.get("news_url"),
         )
 
-    # Date-time conversion utility (not used in comparisons directly but helpful elsewhere)
+    #   date :23.10.2024
+    #   time :12:46
     def date_time_to_dateTime(date, time, date_format='%d.%m.%Y %H:%M'):
         date_str = date + " " + time
         return datetime.strptime(date_str, date_format)
