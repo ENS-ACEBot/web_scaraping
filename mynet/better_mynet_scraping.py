@@ -7,10 +7,11 @@ import os
 import json
 
 class NewsScraper:
-    def __init__(self, base_url, start_date, end_date, date_format='%d/%m/%Y'):
+    def __init__(self, base_url, start_date, end_date,topic, date_format='%d/%m/%Y'):
         self.base_url = base_url
         self.start_date = start_date
         self.end_date = end_date
+        self.topic = topic
         self.date_format = date_format
     
     def generate_urls(self):
@@ -19,12 +20,13 @@ class NewsScraper:
         """
         start = datetime.strptime(self.start_date, self.date_format)
         end = datetime.strptime(self.end_date, self.date_format)
+        topic = self.topic
         delta = timedelta(days=1)
         
         urls = []
         current_date = start
         while current_date <= end:
-            url = self.base_url.format(current_date.day, current_date.month, current_date.year)
+            url = self.base_url.format(current_date.day, current_date.month, current_date.year,topic)
             urls.append(url)
             current_date += delta
         return urls
@@ -81,13 +83,22 @@ class NewsScraper:
         """
         urls = self.generate_urls()
         all_news_data = []
+        all_news_url = set()
         for url in urls:
             logging.info(f"Scraping data from {url}")
             html_content = self.fetch_html(url)
             if html_content:
                 soup = self.parse_html(html_content)
                 news_data = self.extract_news_data(soup)
-                all_news_data.extend(news_data)
+                
+                # Filter out duplicate news articles
+                filtered_news_data = []
+                for news in news_data:
+                    if news['news_url'] not in all_news_url:
+                        all_news_url.add(news['news_url'])
+                        filtered_news_data.append(news)
+                all_news_data.extend(filtered_news_data)
+            logging.info(f"Found {len(news_data)} news articles.")
         return all_news_data
     
 def convert_to_news_objects(news_data_list, source):
@@ -134,60 +145,53 @@ def save_news_to_json(news_list, db_file):
     news_list (list): A list of News objects.
     db_file (str): The name of the JSON database file.
     """
-    try:
-        # Check if file exists and read existing data, if not, initialize an empty list
-        if os.path.exists(db_file):
-            with open(db_file, 'r') as file:
-                existing_data = json.load(file)
-            logging.info(f"Loaded existing data from {db_file}")
-        else:
-            existing_data = []
-            logging.info(f"No existing data found. Starting with an empty list.")
+    # Load existing data from the database file if it exists
+    if os.path.exists(db_file):
+        with open(db_file, 'r') as file:
+            existing_data = json.load(file)
+    else:
+        existing_data = []
 
-        # Extract existing URLs for quick lookup to avoid duplicates
-        existing_urls = {news['news_url'] for news in existing_data}
+    # Convert existing data to News objects
+    existing_news = [News.from_dict(news) for news in existing_data]
 
-        # Filter out news that already exist in the database
-        new_news = [news for news in news_list if news.news_url not in existing_urls]
+    # Create a set of existing news URLs for quick lookup
+    existing_urls = {news.news_url for news in existing_news}
 
-        # Log how many new news items are found
-        logging.info(f"Found {len(new_news)} new news to be added.")
+    # Filter out news that are already in the database
+    new_news = [news for news in news_list if news.news_url not in existing_urls]
 
-        # If there are new news, append to the existing data and save
-        if new_news:
-            existing_data.extend(new_news)
+    # Append new news to the existing data
+    existing_data.extend([news.to_dict() for news in new_news])
 
-            # Write the updated data to the file
-            with open(db_file, 'w') as file:
-                json.dump(existing_data, file, ensure_ascii=False, indent=4)
-            logging.info(f"Saved {len(new_news)} new news items to {db_file}.")
-        else:
-            logging.info("No new news items to add.")
+    # Save the updated data back to the database file
+    with open(db_file, 'w') as file:
+        json.dump(existing_data, file, ensure_ascii=False, indent=4)
     
-    except Exception as e:
-        # Log any error that occurs during the process
-        logging.error(f"An error occurred while saving news to {db_file}: {e}", exc_info=True)
-
+    return existing_data
 
 class Config:
-    DB_FILE = "mynet_news.json"  # Use a SQLite database instead of JSON
+    DB_FILE = "mynet_news_ekonomi.json"  # Use a SQLite database instead of JSON
     NEWS_SOURCE = "MYNET"
     
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)  # Set up logging
     
-    base_url = "https://finans.mynet.com/haber/arsiv/{}/{}/{}/borsa/"
-    start_date = "01/01/2022"
-    end_date = "5/01/2022"
+    base_url = "https://finans.mynet.com/haber/arsiv/{}/{}/{}/{}/"
+    start_date = "01/01/2007"
+    end_date = "27/12/2024"
+    #topic = "borsa"
+    topic = "ekonomi"
     
-    scraper = NewsScraper(base_url, start_date, end_date)
+    scraper = NewsScraper(base_url, start_date, end_date, topic)
     all_news = scraper.scrape_news_data()
     logging.info(f"Scraped {len(all_news)} news articles.")
     logging.info(f"Scraped news size = {len(all_news)}")
     
     logging.info("Converting news data to News objects...")
-    news_objects, failed_news = convert_to_news_objects(all_news, source="Mynet")
+    news_objects, failed_news = convert_to_news_objects(all_news, source = Config.NEWS_SOURCE)
     logging.info(f"Converted {len(news_objects)} news articles to News objects.")
     logging.info(f"Failed to convert {len(failed_news)} news articles.")
-    save_news_to_json(news_objects, Config.DB_FILE)
+    all_database_news = save_news_to_json(news_objects, Config.DB_FILE)
+    logging.info(f"Saved {len(all_database_news)} news articles to the database.")
     
