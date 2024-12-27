@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import logging
-from common.new_class import News
+from new_class import News
 import os
 import json
 
