@@ -1,7 +1,5 @@
 from datetime import datetime
 
-# Description: This file contains the class for the news object
-# title, content, date, source, source_url
 class News:
     def __init__(self, title, source, news_url, content=None, date_time=None):
         self.title = title  # string
@@ -9,8 +7,6 @@ class News:
         self.date_time = date_time  # datetime
         self.source = source  # string
         self.news_url = news_url  # string
-        self.created_time = datetime.now()  # Add created_time
-        self.updated_time = datetime.now()  # Add updated_time
 
     def __str__(self) -> str:
         return f"{self.title} - {self.date_time} - {self.source}"
@@ -22,8 +18,6 @@ class News:
             "date_time": self.date_time.strftime('%Y-%m-%d %H:%M') if self.date_time else None,
             "source": self.source,
             "news_url": self.news_url,
-            "created_time": self.created_time.strftime('%Y-%m-%d %H:%M'),  # Include created_time
-            "updated_time": self.updated_time.strftime('%Y-%m-%d %H:%M'),  # Include updated_time
         }
 
     @classmethod
@@ -34,15 +28,6 @@ class News:
             # Parse date_time string to a datetime object, assuming a specific format
             date_time = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
 
-        # Parse `created_time` and `updated_time` if they exist in `data`
-        created_time = data.get("created_time")
-        if created_time:
-            created_time = datetime.strptime(created_time, '%Y-%m-%d %H:%M')
-
-        updated_time = data.get("updated_time")
-        if updated_time:
-            updated_time = datetime.strptime(updated_time, '%Y-%m-%d %H:%M')
-
         # Return an instance of `News` with data from the dictionary
         return cls(
             title=data.get("title"),
@@ -50,22 +35,22 @@ class News:
             date_time=date_time,
             source=data.get("source"),
             news_url=data.get("news_url"),
-            created_time=created_time,  # Pass created_time to the constructor
-            updated_time=updated_time,  # Pass updated_time to the constructor
         )
 
-    #   date :23.10.2024
-    #   time :12:46
-    def date_time_to_dateTime(date, time):
+    # Date-time conversion utility (not used in comparisons directly but helpful elsewhere)
+    def date_time_to_dateTime(date, time, date_format='%d.%m.%Y %H:%M'):
         date_str = date + " " + time
-        date_format = '%d.%m.%Y %H:%M'
         return datetime.strptime(date_str, date_format)
 
     # Comparison operators with type checking
+
     def __eq__(self, other):
+        """
+        Overridden equality operator to compare news objects based on their `news_url`.
+        """
         if not isinstance(other, News):
             raise TypeError("Cannot compare News with non-News instance")
-        return self.date_time == other.date_time
+        return self.news_url == other.news_url
 
     def __lt__(self, other):
         if not isinstance(other, News):
@@ -86,3 +71,13 @@ class News:
         if not isinstance(other, News):
             raise TypeError("Cannot compare News with non-News instance")
         return self.date_time >= other.date_time
+
+    def __hash__(self):
+        """
+        This is required for using the `News` object in sets and as dictionary keys.
+        We hash by `news_url` since it's the unique identifier for the news object.
+        """
+        return hash(self.news_url)
+
+    def __repr__(self):
+        return f"News(title={self.title}, source={self.source}, date_time={self.date_time}, news_url={self.news_url})"
