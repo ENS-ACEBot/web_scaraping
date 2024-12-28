@@ -1,5 +1,6 @@
 import json
 from new_class import News
+import sys
 
 def combine_json_files(file1, file2, output_file):
     # Read and parse both JSON files
@@ -55,7 +56,11 @@ def combine_json_files(file1, file2, output_file):
         json.dump([n.to_dict() for n in combined_list], out, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    file1 = "mynet_news_borsa_copy.json"
-    file2 = "mynet_news_ekonomi_copy.json"
-    output_file = "mynet_news_combined.json"
+    if len(sys.argv) != 4:
+        print("Usage: python json_combiner.py <file1> <file2> <output_file>")
+        sys.exit(1)
+
+    file1 = sys.argv[1]
+    file2 = sys.argv[2]
+    output_file = sys.argv[3]
     combine_json_files(file1, file2, output_file)
