@@ -6,7 +6,7 @@ from common.new_class import News
 from common.database.types.json_news_database import JSONNewsDatabase
 import os
 import json
-
+#run this in the main project folder
 class NewsScraper:
     def __init__(self, base_url, start_date, end_date,topic, date_format='%d/%m/%Y'):
         self.base_url = base_url
