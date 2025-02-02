@@ -32,8 +32,7 @@ class KapNews:
     stock_codes: Optional[str]
     has_multi_language_support: Optional[bool]
     attachment_count: Optional[int]
-    
-    
+    content: Optional[str]
     @classmethod
     def special_strptime(cls, date_str: str) -> Optional[datetime]:
         """
@@ -82,7 +81,8 @@ class KapNews:
             is_late=data.get("isLate"),
             stock_codes=data.get("stockCodes"),
             has_multi_language_support=data.get("hasMultiLanguageSupport"),
-            attachment_count=data.get("attachmentCount")
+            attachment_count=data.get("attachmentCount"),
+            content = data.get("content")
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -104,5 +104,6 @@ class KapNews:
             "isLate": self.is_late,
             "stockCodes": self.stock_codes,
             "hasMultiLanguageSupport": self.has_multi_language_support,
-            "attachmentCount": self.attachment_count
+            "attachmentCount": self.attachment_count,
+            "content": self.content
         }
