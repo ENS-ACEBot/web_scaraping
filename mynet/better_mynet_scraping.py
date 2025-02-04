@@ -185,7 +185,7 @@ if __name__ == "__main__":
     end_date = "27/12/2024"
     #topic = "borsa"
     topic = "ekonomi"
-    
+
     scraper = NewsScraper(base_url, start_date, end_date, topic)
     all_news = scraper.scrape_news_data()
     logging.info(f"Scraped {len(all_news)} news articles.")

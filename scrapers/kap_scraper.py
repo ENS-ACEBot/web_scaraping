@@ -8,7 +8,7 @@ import os
 from scrapers.abstract_news_scraper import AbstractNewsScraper
 import time
 import html
-import bist_50
+import common.bist_50 as bist_50
 from common.new_class import News
 
 
@@ -21,31 +21,41 @@ class KapNewsScraper(AbstractNewsScraper):
     """
     Scraper for fetching KAP disclosures.
     """
-    def __init(self):
-        
+    def __init__(self):
+        self.disclosure_date_format = "%Y-%m-%d"    
         pass
-    #disclosure_date_format = "%Y-%m-%d"
     
     def scrape_time_interval(self, start_date: str, end_date: str) -> list[News]:
         """
         Scrape news for the given time interval and return a list of News objects.
         date format : "YYYY-MM-DD"
         """
-        try:
-            logging.info(f"Scraping news for time interval started : ")
-            logging.info(f"Scraping KAP disclosures from {start_date} to {end_date}")
-            fetched_disclosures = self.get_all_kap_disclosures_for_given_range(start_date, end_date)
-            logging.info(f"Scraping for news for time interval finished : {len(fetched_disclosures)} disclosures fetched")
-            logging.info(f"Filtering and extracting content for BIST 50 companies for proper type disclosures")
-            kapNews = self.filter_kap_news_and_extract_content(fetched_disclosures, bist_50.BIST_50_SYMBOLS)
-            logging.info(f"Filtered and extracted content for BIST 50 companies : {len(kapNews)} disclosures")
-            logging.info(f"Converting KapNews to News objects")
-            news_list = self.convert_kapnews_to_news(kapNews)
-            logging.info(f"Converted KapNews to News objects : {len(news_list)} news")
-            return news_list
-        except Exception as e:
-            logging.error(f"Error occured while scraping news for time interval started : {e}")
-            return []
+        # try:
+        #     logging.info(f"Scraping news for time interval started : ")
+        #     logging.info(f"Scraping KAP disclosures from {start_date} to {end_date}")
+        #     fetched_disclosures = self.get_all_kap_disclosures_for_given_range(start_date, end_date)
+        #     logging.info(f"Scraping for news for time interval finished : {len(fetched_disclosures)} disclosures fetched")
+        #     logging.info(f"Filtering and extracting content for BIST 50 companies for proper type disclosures")
+        #     kapNews = self.filter_kap_news_and_extract_content(fetched_disclosures, bist_50.BIST_50_SYMBOLS)
+        #     logging.info(f"Filtered and extracted content for BIST 50 companies : {len(kapNews)} disclosures")
+        #     logging.info(f"Converting KapNews to News objects")
+        #     news_list = self.convert_kapnews_to_news(kapNews)
+        #     logging.info(f"Converted KapNews to News objects : {len(news_list)} news")
+        #     return news_list
+        # except Exception as e:
+        #     logging.error(f"Error occured while scraping news for time interval started : {e}")
+        #     return []
+        logging.info(f"Scraping news for time interval started : ")
+        logging.info(f"Scraping KAP disclosures from {start_date} to {end_date}")
+        fetched_disclosures = self.get_all_kap_disclosures_for_given_range(start_date, end_date)
+        logging.info(f"Scraping for news for time interval finished : {len(fetched_disclosures)} disclosures fetched")
+        logging.info(f"Filtering and extracting content for BIST 50 companies for proper type disclosures")
+        kapNews = self.filter_kap_news_and_extract_content(fetched_disclosures, bist_50.BIST_50_SYMBOLS)
+        logging.info(f"Filtered and extracted content for BIST 50 companies : {len(kapNews)} disclosures")
+        logging.info(f"Converting KapNews to News objects")
+        news_list = self.convert_kapnews_to_news(kapNews)
+        logging.info(f"Converted KapNews to News objects : {len(news_list)} news")
+        return news_list
     
     def save_disclosures_json(self, kap_disclosures: list[KapNews], from_date: str, to_date: str, directory: str):
         """
@@ -93,12 +103,13 @@ class KapNewsScraper(AbstractNewsScraper):
             logging.info(f"Fetching disclosures from {curr_start} to {curr_end}")
             
             kap_disclosures = self.fetch_kap_disclosures(curr_start.strftime(self.disclosure_date_format), curr_end.strftime(self.disclosure_date_format))
+            
             all_kap_disclosures.extend(kap_disclosures)
             
-            logging.info(f"Fetched disclosures from {curr_start} to {curr_end} : {len(kap_disclosures)}\n")
+            logging.info(f"Fetched disclosures from {curr_start} to {curr_end} : total disclosure = {len(kap_disclosures)}\n")
             
             # sleep for 1 second to avoid rate limiting
-            time.sleep(3)
+            time.sleep(0.1)
             kap_disclosures = []
             curr_start = curr_end + timedelta(days=1)
 
@@ -330,18 +341,19 @@ class KapNewsScraper(AbstractNewsScraper):
             news_list.append(news)
         return news_list
     
-    def filter_kap_news_and_extract_content(kap_news_list: list[KapNews], stock_codes: list[str]) -> list[KapNews]:
+    def filter_kap_news_and_extract_content(self,disclosures: list[KapNews], stock_codes: list[str]) -> list[KapNews]:
         '''
             filter the kap news list by stock codes and disclosure type and extract the content
         '''
         nw_disclosures = []
+        cnt = 0
         print(len(disclosures))
         for disclosure in disclosures:
             if(disclosure.stock_codes in bist_50.BIST_50_SYMBOLS):
                 print(f"found : {disclosure.stock_codes} - {disclosure.disclosure_index}")
                 if disclosure.disclosure_class == "ODA" :
                     if disclosure.disclosure_category == "STT":
-                        content = scraper.scrape_disclosure_by_index_ODA_STT(disclosure.disclosure_index)
+                        content = self.scrape_disclosure_by_index_ODA_STT(disclosure.disclosure_index)
                         if content == "": 
                             logging.info(f"Failed to fetch content for index {disclosure.disclosure_index}")
                             continue
@@ -349,7 +361,7 @@ class KapNewsScraper(AbstractNewsScraper):
                         nw_disclosures.append(disclosure)
                         
                     elif disclosure.disclosure_category == "ODA" or disclosure.disclosure_type == "ODA":
-                        content = scraper.scrape_disclosure_by_index_ODA_ODA(disclosure.disclosure_index)
+                        content = self.scrape_disclosure_by_index_ODA_ODA(disclosure.disclosure_index)
                         if content == "": 
                             logging.info(f"Failed to fetch content for index {disclosure.disclosure_index}")
                             continue
@@ -401,8 +413,6 @@ if __name__ == "__main__":
         print(f"Converted {len(news_list)} disclosures to news")
         db_file = f"kap/data_with_content_bist50_general_class/news_{from_date}_{to_date}.json"
         scraper.save_news_to_json(news_list,db_file)
-    
-                       
     # try to fetch single disclosure's aciklamalar ODA ODA
     # index = 988819
     # print(scraper.scrape_disclosure_by_index_ODA_ODA(index))
