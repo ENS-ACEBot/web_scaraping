@@ -1,7 +1,7 @@
 import sqlite3
 from abc import ABC, abstractmethod
 #from news_database import NewsDatabase
-from new_class import News
+from common.new_class import News
 import logging
 
 
@@ -20,7 +20,7 @@ class SQLLiteNewsDatabase():
      
     def save_news(self, news_list: list[News]):
         insert_query = '''
-        INSERT INTO news(title, content,date,source,news_url) 
+        INSERT INTO news(title, content,date_time,source,news_url) 
         VALUES(?,?,?,?,?);
         '''
         news_data = [(news.title, news.content, news.date_time, news.source, news.news_url) 
@@ -36,38 +36,37 @@ class SQLLiteNewsDatabase():
         return True
 
     def get_all(self) -> list[News]:
-        select_query = "SELECT * FROM news;"
+        select_query = "SELECT title, content,date_time,source,news_url FROM news;"
         self.cursor.execute(select_query)
         all_news_tuples = self.cursor.fetchall()
         
         # Convert tuples to News objects
-        all_news = [News(title, content, date_time, source, news_url) 
-                    for id, title, content, date_time, source, news_url in all_news_tuples]
+        all_news = [News(title= title, content=content, date_time = date_time, source =source, news_url=news_url) 
+                    for title, content, date_time, source, news_url in all_news_tuples]
         logging.info(f"Retrieved {len(all_news)} news from the database.")
         return all_news
         pass
     
-    def get_query(self, from_date : str, to_date : str, source : str) -> list[News]:
-        get_query_string = "SELECT * FROM news "
-        if(from_date != None or to_date != None or source != None):
-            get_query_string+= "WHERE "
-            if(from_date != None):
-                get_query_string += f"date >= \"{from_date}\" "
-            if(to_date != None):
-                if(from_date !=None):
-                    get_query_string +="AND "
-                get_query_string += f"date <=\"{to_date}\" "
-            if(source != None):
-                if(from_date !=None or to_date != None):
-                    get_query_string +="AND "
-                get_query_string += f"source = \"{source}\" "
-                
-        get_query_string +=";"
+    def get_query(self, from_date = None, to_date = None, source = None) -> list[News]:
+        get_query_string = "SELECT title,content,date_time,source,news_url FROM news "
+        conditions = []
+        
+        if(from_date):
+            conditions.append(f"date_time >= '{from_date}'")
+        if(to_date):
+            conditions.append(f"date_time <= '{to_date}'")
+        if(source):
+            conditions.append(f"source = '{source}'")
+        
+        if(conditions):
+            get_query_string += "WHERE " + " AND ".join(conditions)
+        get_query_string += ";"
+        
         try:
             self.cursor.execute(get_query_string)
             news_list_tuples = self.cursor.fetchall()
-            news_list = [News(title, content, date_time, source, news_url) 
-                        for id, title, content, date_time, source, news_url in news_list_tuples]
+            news_list = [News(title =title, content=content, date_time=date_time, source = source, news_url = news_url) 
+                        for title, content, date_time, source, news_url in news_list_tuples]
             logging.info(f"Query executed :[{get_query_string}] - {len(news_list)} news fetched")
             return news_list
         except Exception as e:
@@ -81,7 +80,7 @@ class SQLLiteNewsDatabase():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT,
             content TEXT,
-            date TEXT,
+            date_time TEXT,
             source TEXT,
             news_url TEXT
         );
