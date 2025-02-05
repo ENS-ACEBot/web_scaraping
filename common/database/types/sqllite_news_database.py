@@ -82,7 +82,7 @@ class SQLLiteNewsDatabase():
             content TEXT,
             date_time TEXT,
             source TEXT,
-            news_url TEXT
+            news_url TEXT UNIQUE
         );
         """
         try:
