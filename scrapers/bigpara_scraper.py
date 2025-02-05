@@ -49,7 +49,7 @@ class BigparaNewsScraper(AbstractNewsScraper):
                     filtered_news.append(news)
             if flag == False: # if the news is not in the interval break the loop
                 break
-        logging.info(f"[Bigpara] Found {len(news_list)} news articles. Interval : {start_date} - {end_date}")
+        logging.info(f"[Bigpara] Found {len(filtered_news)} news articles. Interval : {start_date} - {end_date}")
         # update all news content
         filtered_news = self.update_news_content(filtered_news)
         return filtered_news
