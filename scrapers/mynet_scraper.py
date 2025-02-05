@@ -13,13 +13,14 @@ import json
 class MynetNewsScraper(AbstractNewsScraper):
     def __init__(self,):
         self.base_url = "https://finans.mynet.com/haber/arsiv/{}/{}/{}/{}/"
+        self.source = "MYNET"
+        self.topics = ['borsa','ekonomi']
         pass
     def scrape_time_interval(self, start_date: str, end_date: str) -> list[News]:
         """
         Main method to scrape news data for the date range
         date_format='%Y-%m-%d'
         """
-        topics = ['borsa','ekonomi']
         date_format='%Y-%m-%d'
         
         # check date format
@@ -33,7 +34,7 @@ class MynetNewsScraper(AbstractNewsScraper):
         all_news_data = []
         all_news_url = set()
         # get news for each topic
-        for topic in topics:
+        for topic in self.topics:
             urls = self.generate_urls(start_date=start_date, end_date=end_date, topic=topic)
             for url in urls:
                 logging.info(f"Scraping data from {url}")
@@ -51,7 +52,7 @@ class MynetNewsScraper(AbstractNewsScraper):
                     all_news_data.extend(filtered_news_data)
                 logging.info(f"Found {len(news_data)} news from MYNET for {topic}.") 
         # this borsa and ekonomi news can have intersection we filtered out duplicates
-        all_news_objects, failed_news = convert_to_news_objects(all_news_data, source = "MYNET")
+        all_news_objects, failed_news = convert_to_news_objects(all_news_data, source = self.source)
         logging.info(f"[MYNET] Scraped total {len(all_news_data)} news articles. Failed to convert {len(failed_news)} news articles.")
         return all_news_objects
     
@@ -212,32 +213,3 @@ def save_news_to_json(news_list, db_file):
         json.dump(existing_data, file, ensure_ascii=False, indent=4)
     
     return existing_data
-
-class Config:
-    DB_FILE = "mynet_news_ekonomi.json"  # Use a SQLite database instead of JSON
-    NEWS_SOURCE = "MYNET"
-    
-# if __name__ == "__main__":
-    # logging.basicConfig(level=logging.INFO)  # Set up logging
-    # # Create a JSON database
-    # database = JSONNewsDatabase(Config.DB_FILE)
-    
-    # base_url = "https://finans.mynet.com/haber/arsiv/{}/{}/{}/{}/"
-    # start_date = "25/12/2024"
-    # end_date = "27/12/2024"
-    # #topic = "borsa"
-    # topic = "ekonomi"
-
-    # scraper = NewsScraper(base_url, start_date, end_date, topic)
-    # all_news = scraper.scrape_news_data()
-    # logging.info(f"Scraped {len(all_news)} news articles.")
-    # logging.info(f"Scraped news size = {len(all_news)}")
-    
-    # logging.info("Converting news data to News objects...")
-    # news_objects, failed_news = convert_to_news_objects(all_news, source = Config.NEWS_SOURCE)
-    # logging.info(f"Converted {len(news_objects)} news articles to News objects.")
-    # logging.info(f"Failed to convert {len(failed_news)} news articles.")
-    # # all_database_news = save_news_to_json(news_objects, Config.DB_FILE)
-    # all_database_news = database.save_news(news_objects)
-    # logging.info(f"Saved {len(all_database_news)} news articles to the database.")
-    

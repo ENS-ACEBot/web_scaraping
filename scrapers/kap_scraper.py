@@ -175,8 +175,8 @@ class KapNewsScraper(AbstractNewsScraper):
         for i in range(start_year,end_year,-1):
             from_date   = f"{i}-01-01"
             to_date     = f"{i}-12-31" 
-            kap_disclosures = scraper.get_all_kap_disclosures_for_given_range(from_date=from_date, to_date=to_date)
-            scraper.save_disclosures_json(kap_disclosures, from_date, to_date, "kap/data")
+            kap_disclosures = self.get_all_kap_disclosures_for_given_range(from_date=from_date, to_date=to_date)
+            self.save_disclosures_json(kap_disclosures, from_date, to_date, "kap/data")
     
     # it is used to retrive the kap disclosures from the json files
     def load_kap_news_from_json_files(self,directory: str) -> list[KapNews]:
@@ -389,44 +389,44 @@ class KapNewsScraper(AbstractNewsScraper):
         
         return news_data
         
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    scraper = KapNewsScraper()
-    # 2017 den once old kap oluyormus orda farkli bir data scraping lazim
-    # get old scraped disclosures data
-    # for i in range(2017,2024):
-    #     cnt = 0
-    #     from_date   = f"{i}-01-01"
-    #     to_date     = f"{i}-12-31"         
-    #     disclosures = scraper.load_kap_news_from_json_files(i,i+1, "kap/data")
-    #     print(f"Loaded {len(disclosures)} disclosures - {from_date} to {to_date}")
-    #     nw_disclosures = scraper.filter_kap_news_and_extract_content(disclosures, bist_50.BIST_50_SYMBOLS)
-    #     scraper.save_disclosures_json(nw_disclosures, from_date, to_date, "kap/data_with_content_bist50")
-    #     print(f"Saved {len(nw_disclosures)} disclosures - {from_date} to {to_date} ")
-    for i in range(2017,2025):
-        cnt = 0
-        from_date   = f"{i}-01-01"
-        to_date     = f"{i}-12-31"    
-        file_name = f"kap/data_with_content_bist50/kap_disclosures_{from_date}_{to_date}.json"
-        disclosures =  scraper.load_kap_news_from_json_files(file_name)
-        news_list = scraper.convert_kapnews_to_news(disclosures)
-        print(f"Converted {len(news_list)} disclosures to news")
-        db_file = f"kap/data_with_content_bist50_general_class/news_{from_date}_{to_date}.json"
-        scraper.save_news_to_json(news_list,db_file)
-    # try to fetch single disclosure's aciklamalar ODA ODA
-    # index = 988819
-    # print(scraper.scrape_disclosure_by_index_ODA_ODA(index))
-    # logging.info("Done")
-    # index = 1388482
-    # disclosure_details = scraper.scrape_disclosure_by_index_ODA_ODA(index)
-    # print(disclosure_details["content"])  # Print the content directly
+# if __name__ == "__main__":
+#     logging.basicConfig(level=logging.INFO)
+#     scraper = KapNewsScraper()
+#     # 2017 den once old kap oluyormus orda farkli bir data scraping lazim
+#     # get old scraped disclosures data
+#     # for i in range(2017,2024):
+#     #     cnt = 0
+#     #     from_date   = f"{i}-01-01"
+#     #     to_date     = f"{i}-12-31"         
+#     #     disclosures = scraper.load_kap_news_from_json_files(i,i+1, "kap/data")
+#     #     print(f"Loaded {len(disclosures)} disclosures - {from_date} to {to_date}")
+#     #     nw_disclosures = scraper.filter_kap_news_and_extract_content(disclosures, bist_50.BIST_50_SYMBOLS)
+#     #     scraper.save_disclosures_json(nw_disclosures, from_date, to_date, "kap/data_with_content_bist50")
+#     #     print(f"Saved {len(nw_disclosures)} disclosures - {from_date} to {to_date} ")
+#     for i in range(2017,2025):
+#         cnt = 0
+#         from_date   = f"{i}-01-01"
+#         to_date     = f"{i}-12-31"    
+#         file_name = f"kap/data_with_content_bist50/kap_disclosures_{from_date}_{to_date}.json"
+#         disclosures =  scraper.load_kap_news_from_json_files(file_name)
+#         news_list = scraper.convert_kapnews_to_news(disclosures)
+#         print(f"Converted {len(news_list)} disclosures to news")
+#         db_file = f"kap/data_with_content_bist50_general_class/news_{from_date}_{to_date}.json"
+#         scraper.save_news_to_json(news_list,db_file)
+#     # try to fetch single disclosure's aciklamalar ODA ODA
+#     # index = 988819
+#     # print(scraper.scrape_disclosure_by_index_ODA_ODA(index))
+#     # logging.info("Done")
+#     # index = 1388482
+#     # disclosure_details = scraper.scrape_disclosure_by_index_ODA_ODA(index)
+#     # print(disclosure_details["content"])  # Print the content directly
 
-    # try to fetch single disclosure's aciklamalar ODA STT
-    # index = 1365798
-    # disclosure_details = scraper.scrape_disclosure_by_index_ODA_STT(index)
-    # print(disclosure_details)  # Print the content directly
-    # print()
-    # index = 1365794
-    # disclosure_details = scraper.scrape_disclosure_by_index_ODA_STT(index)
-    # print(disclosure_details)  # Print the content directly
+#     # try to fetch single disclosure's aciklamalar ODA STT
+#     # index = 1365798
+#     # disclosure_details = scraper.scrape_disclosure_by_index_ODA_STT(index)
+#     # print(disclosure_details)  # Print the content directly
+#     # print()
+#     # index = 1365794
+#     # disclosure_details = scraper.scrape_disclosure_by_index_ODA_STT(index)
+#     # print(disclosure_details)  # Print the content directly
     
