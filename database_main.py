@@ -1,4 +1,4 @@
-from common.database.types.sqllite_news_database import SQLLiteNewsDatabase 
+from database.types.sqllite_news_database import SQLLiteNewsDatabase 
 from common.new_class import News
 import os
 from typing import List

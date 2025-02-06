@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import logging
 from common.new_class import News
-from common.database.types.json_news_database import JSONNewsDatabase
 from scrapers.abstract_news_scraper import AbstractNewsScraper
 import os
 import json

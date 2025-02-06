@@ -2,12 +2,10 @@ from scrapers.abstract_news_scraper import AbstractNewsScraper
 from scrapers.mynet_scraper import MynetNewsScraper 
 from scrapers.kap_scraper import KapNewsScraper
 from scrapers.bigpara_scraper import BigparaNewsScraper
+from database.types.sqllite_news_database import SQLLiteNewsDatabase
 import logging
 import datetime
 from common.new_class import News
-
-
-
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -17,20 +15,23 @@ if __name__ == "__main__":
     interval = datetime.timedelta(days=1)
     
     fetching_date_str = fetching_date.strftime(date_format)
+    scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper()]
 
-    mynet_scraper = MynetNewsScraper()
-    mynet_news = mynet_scraper.scrape_time_interval(fetching_date_str,fetching_date_str)
+    all_news = []
 
-    kap_scraper = KapNewsScraper()
+    database = SQLLiteNewsDatabase("data/sql_news.db")
     
-    kap_news = kap_scraper.scrape_time_interval(fetching_date_str,fetching_date_str)
+    for scraper in scrapers:
+        logging.info(f"Scraping data from {scraper.source} : interval {fetching_date_str}")
+        scraper_news = scraper.scrape_time_interval(start_date=fetching_date_str, end_date=fetching_date_str)
+        all_news.extend(scraper_news)
+        logging.info(50*"-")
+        logging.info(f"Scraped {len(scraper_news)} news from {scraper.source}")
+        logging.info(50*"-")
+        database.save_news(scraper_news)
     
-    bigpara_scraper = BigparaNewsScraper()
+    logging.info(50*"-")
+    logging.info(f"Scraped total {len(all_news)} news articles.")
+    logging.info(50*"-")
     
-    bigpara_news =  bigpara_scraper.scrape_time_interval(fetching_date_str,fetching_date_str)
-    
-    # for news in bigpara_news:
-    #     print(news.title)
-    #     print(news.date_time)
-
     
