@@ -8,9 +8,6 @@ import logging
 #class SQLLiteNewsDatabase(NewsDatabase):
 class SQLLiteNewsDatabase():
 
-    """
-    Abstract base class for a news database.
-    """
     def __init__(self, db_path: str):
         self.db_path = db_path
         self.connection = sqlite3.connect(self.db_path)
@@ -19,6 +16,9 @@ class SQLLiteNewsDatabase():
         logging.info("SQLLite database initialized")
      
     def save_news(self, news_list: list[News]):
+        '''
+            Save a list of news to the database.
+        '''
         insert_query = '''
         INSERT INTO news(title, content,date_time,source,news_url) 
         VALUES(?,?,?,?,?);
@@ -44,6 +44,9 @@ class SQLLiteNewsDatabase():
         return True
 
     def save_new(self, news: News):
+        '''
+            Save a single news to the database.
+        '''
         insert_query = '''
         INSERT INTO news(title, content,date_time,source,news_url) 
         VALUES(?,?,?,?,?);
@@ -70,7 +73,7 @@ class SQLLiteNewsDatabase():
         return all_news
         pass
     
-    def get_query(self, from_date = None, to_date = None, source = None) -> list[News]:
+    def get_query(self, from_date = None, to_date = None, source = None, limit: int = None) -> list[News]:
         get_query_string = "SELECT title,content,date_time,source,news_url FROM news "
         conditions = []
         
@@ -83,6 +86,12 @@ class SQLLiteNewsDatabase():
         
         if(conditions):
             get_query_string += "WHERE " + " AND ".join(conditions)
+        
+        get_query_string += " ORDER BY date_time DESC"
+        
+        if limit:
+            get_query_string += f" LIMIT {limit}"
+        
         get_query_string += ";"
         
         try:
