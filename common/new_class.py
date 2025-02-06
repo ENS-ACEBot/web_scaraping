@@ -16,7 +16,7 @@ class News:
     def to_dict(self):
         return {
             "title": self.title,
-            "content": self.content,
+            "content": self.content if self.content else "",
             "date_time": self.date_time.strftime('%Y-%m-%d %H:%M') if self.date_time else None,
             "source": self.source,
             "news_url": self.news_url,
@@ -33,7 +33,7 @@ class News:
         # Return an instance of `News` with data from the dictionary
         return cls(
             title=data.get("title"),
-            content=data.get("content"),
+            content=data.get("content") if data.get("content") else "",
             date_time=date_time,
             source=data.get("source"),
             news_url=data.get("news_url"),
