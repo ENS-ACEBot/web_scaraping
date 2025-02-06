@@ -25,15 +25,16 @@ if __name__ == "__main__":
         logging.info(f"Scraping data from {scraper.source} : interval {fetching_date_str}")
         
         scraper_news = scraper.scrape_time_interval(start_date=fetching_date_str, end_date=fetching_date_str)
-        last_news = database.get_query(source=scraper.source, limit=1)
         
+        # get the last news for source and filter the news that are already in the database (earlier than the last news)
+        last_news = database.get_query(source=scraper.source, limit=1)
         if last_news:
             last_news = last_news[0]
             logging.info(50*"-")
             logging.info(f"Last news in the database for {scraper.source} : {last_news.date_time}")
             logging.info(50*"-")
             # filter the news that are already in the database
-            scraper_news = [news for news in scraper_news if news.date_time > datetime.datetime.today()]
+            scraper_news = [news for news in scraper_news if news.date_time >= last_news.date_time]
         else :
             logging.info(f"No news found in the database for {scraper.source}")
         
