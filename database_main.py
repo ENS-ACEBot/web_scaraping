@@ -35,6 +35,10 @@ if __name__ == "__main__":
     directory = "/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/data/json_data"
     news_list = read_news_from_json_files(directory)
     database.save_news(news_list)
+    # for idx,new in enumerate(news_list):
+    #     database.save_news([new])
+    #     print(f"Saved {idx+1}/{len(news_list)} news to the database.")
+    #     print(f"title : {new.news_url}")
     database_news = database.get_all()
     print(f"Read {len(news_list)} news articles from JSON files.")
     # for new in news_list[:1]:
@@ -50,13 +54,10 @@ if __name__ == "__main__":
     #     print(f"date_time : {new.date_time}")
     #     print(f"source : {new.source}")
     #     print(f"news_url : {new.news_url}")
-    kap_news = database.get_query( source="KAP")
+    # kap_news = database.get_query( source="KAP")
     
-    print(f"Read {len(kap_news)} news articles from the database.")
-    for kap in kap_news:
-        print(kap.source)
     # compare all the elements
-    for i in range(len(news_list)):
-        if(news_list[i] not in database_news):
-            print(f"Not found in database {news_list[i].title}")
-    print("Finished comparing all elements")
+    # for i in range(len(news_list)):
+    #     if(news_list[i] not in database_news):
+    #         print(f"Not found in database {news_list[i].title}")
+    # print("Finished comparing all elements")
