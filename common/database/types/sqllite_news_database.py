@@ -29,12 +29,35 @@ class SQLLiteNewsDatabase():
             self.cursor.executemany(insert_query, news_data)
             self.connection.commit()
             logging.info(f"Saved {len(news_list)} news to the database.")
+        except sqlite3.IntegrityError as e:
+            logging.error(f"An error occurred while saving news to the database: {e}")
+            self.connection.rollback()
+            # Save each news one by one in case of error
+            logging.info("Trying to save each news one by one...")
+            for idx,news in enumerate(news_list):
+                logging.info(f"{idx+1}/{len(news_list)}")
+                self.save_new(news)
         except sqlite3.Error as e:
             logging.error(f"An error occurred while saving news to the database: {e}")
             self.connection.rollback()  # Rollback the transaction in case of error
             return False
         return True
 
+    def save_new(self, news: News):
+        insert_query = '''
+        INSERT INTO news(title, content,date_time,source,news_url) 
+        VALUES(?,?,?,?,?);
+        '''
+        news_data = (news.title, news.content, news.date_time, news.source, news.news_url)
+        try:
+            self.cursor.execute(insert_query, news_data)
+            self.connection.commit()
+            logging.info(f"Saved {news.title} to the database.")
+        except sqlite3.Error as e:
+            logging.error(f"An error occurred while saving news to the database: {e}")
+            self.connection.rollback()
+            
+            
     def get_all(self) -> list[News]:
         select_query = "SELECT title, content,date_time,source,news_url FROM news;"
         self.cursor.execute(select_query)
