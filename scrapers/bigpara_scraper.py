@@ -27,8 +27,8 @@ class BigparaNewsScraper(AbstractNewsScraper):
         """
         self.base_url = "https://bigpara.hurriyet.com.tr"
         self.news_page_url = "https://bigpara.hurriyet.com.tr/haberler/tumu/bu-yil/"
-        self.source = "BIGPARA"
         self.page_count = self.get_maximum_page_count()
+        super().__init__("BIGPARA") # self.source = "BIGPARA"
         
     def scrape_time_interval(self, start_date: str, end_date: str) -> list[News]:
         '''

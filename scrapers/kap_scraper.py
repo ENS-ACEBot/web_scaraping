@@ -18,11 +18,13 @@ DISCLOSURE_INTERVAL_ENDPOINT = "https://www.kap.org.tr/tr/api/memberDisclosureQu
 DISCLOSURE_BY_INDEX_ENDPOINT = "https://www.kap.org.tr/tr/Bildirim/"
 # "https://www.kap.org.tr/tr/Bildirim/<index>"
 class KapNewsScraper(AbstractNewsScraper):
+    
     """
     Scraper for fetching KAP disclosures.
     """
     def __init__(self):
         self.disclosure_date_format = "%Y-%m-%d"    
+        super().__init__("KAP") # self.source = "KAP"
         pass
     
     def scrape_time_interval(self, start_date: str, end_date: str) -> list[News]:

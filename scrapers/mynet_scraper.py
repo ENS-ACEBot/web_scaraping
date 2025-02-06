@@ -13,8 +13,8 @@ import json
 class MynetNewsScraper(AbstractNewsScraper):
     def __init__(self,):
         self.base_url = "https://finans.mynet.com/haber/arsiv/{}/{}/{}/{}/"
-        self.source = "MYNET"
         self.topics = ['borsa','ekonomi']
+        super().__init__(source="MYNET") # self.source = "MYNET"
         pass
     def scrape_time_interval(self, start_date: str, end_date: str) -> list[News]:
         """
