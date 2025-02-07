@@ -36,7 +36,7 @@ class MynetNewsScraper(AbstractNewsScraper):
         for topic in self.topics:
             urls = self.generate_urls(start_date=start_date, end_date=end_date, topic=topic)
             for url in urls:
-                logging.info(f"Scraping data from {url}")
+                logging.debug(f"Scraping data from {url}")
                 html_content = self.fetch_html(url)
                 if html_content:
                     soup = self.parse_html(html_content)
@@ -49,10 +49,10 @@ class MynetNewsScraper(AbstractNewsScraper):
                             all_news_url.add(news['news_url'])
                             filtered_news_data.append(news)
                     all_news_data.extend(filtered_news_data)
-                logging.info(f"Found {len(news_data)} news from MYNET for {topic}.") 
+                logging.debug(f"Found {len(news_data)} news from MYNET for {topic}.") 
         # this borsa and ekonomi news can have intersection we filtered out duplicates
         all_news_objects, failed_news = convert_to_news_objects(all_news_data, source = self.source)
-        logging.info(f"[MYNET] Scraped total {len(all_news_data)} news articles. Failed to convert {len(failed_news)} news articles.")
+        logging.debug(f"[MYNET] Scraped total {len(all_news_data)} news articles. Failed to convert {len(failed_news)} news articles.")
         return all_news_objects
     
     
@@ -128,7 +128,7 @@ class MynetNewsScraper(AbstractNewsScraper):
         all_news_data = []
         all_news_url = set()
         for url in urls:
-            logging.info(f"Scraping data from {url}")
+            logging.debug(f"Scraping data from {url}")
             html_content = self.fetch_html(url)
             if html_content:
                 soup = self.parse_html(html_content)
@@ -141,7 +141,7 @@ class MynetNewsScraper(AbstractNewsScraper):
                         all_news_url.add(news['news_url'])
                         filtered_news_data.append(news)
                 all_news_data.extend(filtered_news_data)
-            logging.info(f"Found {len(news_data)} news articles.")
+            logging.debug(f"Found {len(news_data)} news articles.")
         return all_news_data
     
 def convert_to_news_objects(news_data_list, source):

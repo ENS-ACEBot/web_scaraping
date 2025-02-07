@@ -33,30 +33,30 @@ class KapNewsScraper(AbstractNewsScraper):
         date format : "YYYY-MM-DD"
         """
         # try:
-        #     logging.info(f"Scraping news for time interval started : ")
-        #     logging.info(f"Scraping KAP disclosures from {start_date} to {end_date}")
+        #     logging.debug(f"Scraping news for time interval started : ")
+        #     logging.debug(f"Scraping KAP disclosures from {start_date} to {end_date}")
         #     fetched_disclosures = self.get_all_kap_disclosures_for_given_range(start_date, end_date)
-        #     logging.info(f"Scraping for news for time interval finished : {len(fetched_disclosures)} disclosures fetched")
-        #     logging.info(f"Filtering and extracting content for BIST 50 companies for proper type disclosures")
+        #     logging.debug(f"Scraping for news for time interval finished : {len(fetched_disclosures)} disclosures fetched")
+        #     logging.debug(f"Filtering and extracting content for BIST 50 companies for proper type disclosures")
         #     kapNews = self.filter_kap_news_and_extract_content(fetched_disclosures, bist_50.BIST_50_SYMBOLS)
-        #     logging.info(f"Filtered and extracted content for BIST 50 companies : {len(kapNews)} disclosures")
-        #     logging.info(f"Converting KapNews to News objects")
+        #     logging.debug(f"Filtered and extracted content for BIST 50 companies : {len(kapNews)} disclosures")
+        #     logging.debug(f"Converting KapNews to News objects")
         #     news_list = self.convert_kapnews_to_news(kapNews)
-        #     logging.info(f"Converted KapNews to News objects : {len(news_list)} news")
+        #     logging.debug(f"Converted KapNews to News objects : {len(news_list)} news")
         #     return news_list
         # except Exception as e:
         #     logging.error(f"Error occured while scraping news for time interval started : {e}")
         #     return []
-        logging.info(f"Scraping news for time interval started : ")
-        logging.info(f"Scraping KAP disclosures from {start_date} to {end_date}")
+        logging.debug(f"Scraping news for time interval started : ")
+        logging.debug(f"Scraping KAP disclosures from {start_date} to {end_date}")
         fetched_disclosures = self.get_all_kap_disclosures_for_given_range(start_date, end_date)
-        logging.info(f"Scraping for news for time interval finished : {len(fetched_disclosures)} disclosures fetched")
-        logging.info(f"Filtering and extracting content for BIST 50 companies for proper type disclosures")
+        logging.debug(f"Scraping for news for time interval finished : {len(fetched_disclosures)} disclosures fetched")
+        logging.debug(f"Filtering and extracting content for BIST 50 companies for proper type disclosures")
         kapNews = self.filter_kap_news_and_extract_content(fetched_disclosures, bist_50.BIST_50_SYMBOLS)
-        logging.info(f"Filtered and extracted content for BIST 50 companies : {len(kapNews)} disclosures")
-        logging.info(f"Converting KapNews to News objects")
+        logging.debug(f"Filtered and extracted content for BIST 50 companies : {len(kapNews)} disclosures")
+        logging.debug(f"Converting KapNews to News objects")
         news_list = self.convert_kapnews_to_news(kapNews)
-        logging.info(f"Converted KapNews to News objects : {len(news_list)} news")
+        logging.debug(f"Converted KapNews to News objects : {len(news_list)} news")
         return news_list
     
     def save_disclosures_json(self, kap_disclosures: list[KapNews], from_date: str, to_date: str, directory: str):
@@ -79,7 +79,7 @@ class KapNewsScraper(AbstractNewsScraper):
         file_path = f"{directory}/kap_disclosures_{from_date}_{to_date}.json"
         with open(file_path, 'w') as file:
             json.dump([disclosure.to_dict() for disclosure in kap_disclosures], file, ensure_ascii=False, indent=4)
-        logging.info(f"KAP disclosures saved to {file_path}")
+        logging.debug(f"KAP disclosures saved to {file_path}")
     
     # fetch all kap disclosures in the given range and return the list of KapNews objects without content
     def get_all_kap_disclosures_for_given_range(self, from_date: str, to_date: str):
@@ -93,22 +93,22 @@ class KapNewsScraper(AbstractNewsScraper):
         all_kap_disclosures = []
         curr_start = start
         
-        logging.info("-" * 50)
-        logging.info(f"Fetching KAP disclosures from {from_date} to {to_date}")
-        logging.info("-" * 50)
+        logging.debug("-" * 50)
+        logging.debug(f"Fetching KAP disclosures from {from_date} to {to_date}")
+        logging.debug("-" * 50)
         
         while curr_start <= end:
             curr_end = curr_start + delta
             if curr_end > end:
                 curr_end = end
                 
-            logging.info(f"Fetching disclosures from {curr_start} to {curr_end}")
+            logging.debug(f"Fetching disclosures from {curr_start} to {curr_end}")
             
             kap_disclosures = self.fetch_kap_disclosures(curr_start.strftime(self.disclosure_date_format), curr_end.strftime(self.disclosure_date_format))
             
             all_kap_disclosures.extend(kap_disclosures)
             
-            logging.info(f"Fetched disclosures from {curr_start} to {curr_end} : total disclosure = {len(kap_disclosures)}\n")
+            logging.debug(f"Fetched disclosures from {curr_start} to {curr_end} : total disclosure = {len(kap_disclosures)}\n")
             
             # sleep for 1 second to avoid rate limiting
             time.sleep(0.1)
@@ -116,10 +116,10 @@ class KapNewsScraper(AbstractNewsScraper):
             curr_start = curr_end + timedelta(days=1)
 
             
-        logging.info("-" * 50)
-        logging.info(f"All discloures fetched from {from_date} to {to_date}")
-        logging.info(f"Total {len(all_kap_disclosures)} disclosures fetched.")
-        logging.info("-" * 50)  
+        logging.debug("-" * 50)
+        logging.debug(f"All discloures fetched from {from_date} to {to_date}")
+        logging.debug(f"Total {len(all_kap_disclosures)} disclosures fetched.")
+        logging.debug("-" * 50)  
         return all_kap_disclosures
 
     # fetch the kap disclosures from the given date range and return the list of KapNews objects without content
@@ -202,7 +202,7 @@ class KapNewsScraper(AbstractNewsScraper):
                 for item in data:
                     kap_news_list.append(KapNews.from_dict(item))
         else:
-            print(f"File not found: {file_path}")
+            logging.error(f"File not found: {file_path}")
             
         return kap_news_list
     
@@ -225,7 +225,7 @@ class KapNewsScraper(AbstractNewsScraper):
 
         max_retries = 9
         retry_delay = 2  # Initial delay in seconds
-        logging.info(f"[ODA_ODA] Fetching disclosure by index {index}")
+        logging.debug(f"[ODA_ODA] Fetching disclosure by index {index}")
         for attempt in range(max_retries):
             try:
                 response = requests.get(url, headers=headers)
@@ -236,13 +236,13 @@ class KapNewsScraper(AbstractNewsScraper):
                 # Find the div with the specified class
                 content_div = soup.find('td', class_='taxonomy-context-value-summernote multi-language-content content-tr')
                 if not content_div:
-                    print(f"Content div not found for index {index}")
+                    logging.debug(f"Content div not found for index {index}")
                     return {}
 
                 # Extract the text inside the text-block-value div
                 text_block = content_div.find('div', class_='text-block-value')
                 if not text_block:
-                    print(f"Text block not found for index {index}")
+                    logging.debug(f"Text block not found for index {index}")
                     return {}
                 content_text = text_block.get_text(separator=' ', strip=True)            # ensure the space between different blocks
                 content_text = content_text.replace('\xa0', ' ')              # ensure the conversion of binary-space to normal space
@@ -254,7 +254,7 @@ class KapNewsScraper(AbstractNewsScraper):
                 time.sleep(retry_delay)
                 retry_delay *= 2  # Exponential backoff
 
-        print(f"Failed to fetch disclosure by index {index}: {e}")
+        logging.debug(f"Failed to fetch disclosure by index {index}: {e}")
         return ""
     
     # scrape the given indexed disclousre's content from the kap website and return content
@@ -276,7 +276,7 @@ class KapNewsScraper(AbstractNewsScraper):
         
         max_retries = 9
         retry_delay = 2  # Initial delay in seconds
-        logging.info(f"[ODA_STT] Fetching disclosure by index {index}")
+        logging.debug(f"[ODA_STT] Fetching disclosure by index {index}")
         for attempt in range(max_retries):
             try:
                 response = requests.get(url, headers=headers)
@@ -287,13 +287,13 @@ class KapNewsScraper(AbstractNewsScraper):
                 # Find the div with the specified class
                 table_div = soup.find('div', class_='disclosureScrollableArea')
                 if not table_div:
-                    print(f"disclosureScrollableArea div not found for index {index}")
+                    logging.debug(f"disclosureScrollableArea div not found for index {index}")
                     return {}
 
                 # Extract the text inside the text-block-value div
                 td_elements = table_div.find_all('td')
                 if not td_elements:
-                    print(f"Table elements not found for index {index}")
+                    logging.debug(f"Table elements not found for index {index}")
                     return {}
                 
                 # Get the text of the last td element
@@ -305,7 +305,7 @@ class KapNewsScraper(AbstractNewsScraper):
                         break
                 
                 if(last_td_text == ""):
-                    print(f"Ek aciklama not found for index {index}")
+                    logging.debug(f"Ek aciklama not found for index {index}")
                     return {}
                     
                 last_td_text = last_td_text.replace('\xa0', ' ')  # Replace non-breaking spaces with regular spaces
@@ -317,7 +317,7 @@ class KapNewsScraper(AbstractNewsScraper):
                 time.sleep(retry_delay)
                 retry_delay *= 2  # Exponential backoff
 
-        print(f"Failed to fetch disclosure by index {index}: {e}")
+        logging.debug(f"Failed to fetch disclosure by index {index}: {e}")
         return ""
     
     def convert_kapnews_to_news(self,kap_news_list: list[KapNews]) -> list[News]:
@@ -349,15 +349,15 @@ class KapNewsScraper(AbstractNewsScraper):
         '''
         nw_disclosures = []
         cnt = 0
-        print(len(disclosures))
+        logging.debug(len(disclosures))
         for disclosure in disclosures:
             if(disclosure.stock_codes in bist_50.BIST_50_SYMBOLS):
-                print(f"found : {disclosure.stock_codes} - {disclosure.disclosure_index}")
+                logging.debug(f"found : {disclosure.stock_codes} - {disclosure.disclosure_index}")
                 if disclosure.disclosure_class == "ODA" :
                     if disclosure.disclosure_category == "STT":
                         content = self.scrape_disclosure_by_index_ODA_STT(disclosure.disclosure_index)
                         if content == "": 
-                            logging.info(f"Failed to fetch content for index {disclosure.disclosure_index}")
+                            logging.debug(f"Failed to fetch content for index {disclosure.disclosure_index}")
                             continue
                         disclosure.content = content
                         nw_disclosures.append(disclosure)
@@ -365,12 +365,12 @@ class KapNewsScraper(AbstractNewsScraper):
                     elif disclosure.disclosure_category == "ODA" or disclosure.disclosure_type == "ODA":
                         content = self.scrape_disclosure_by_index_ODA_ODA(disclosure.disclosure_index)
                         if content == "": 
-                            logging.info(f"Failed to fetch content for index {disclosure.disclosure_index}")
+                            logging.debug(f"Failed to fetch content for index {disclosure.disclosure_index}")
                             continue
                         disclosure.content = content
                         nw_disclosures.append(disclosure)
                     time.sleep(0.01)
-            logging.info(f"Processed {cnt} disclosures : remaining {len(disclosures) - cnt}")
+            logging.debug(f"Processed {cnt} disclosures : remaining {len(disclosures) - cnt}")
             cnt+=1
         return nw_disclosures
     
@@ -392,7 +392,7 @@ class KapNewsScraper(AbstractNewsScraper):
         return news_data
         
 # if __name__ == "__main__":
-#     logging.basicConfig(level=logging.INFO)
+#     logging.basicConfig(level=logging.debug)
 #     scraper = KapNewsScraper()
 #     # 2017 den once old kap oluyormus orda farkli bir data scraping lazim
 #     # get old scraped disclosures data
@@ -401,10 +401,10 @@ class KapNewsScraper(AbstractNewsScraper):
 #     #     from_date   = f"{i}-01-01"
 #     #     to_date     = f"{i}-12-31"         
 #     #     disclosures = scraper.load_kap_news_from_json_files(i,i+1, "kap/data")
-#     #     print(f"Loaded {len(disclosures)} disclosures - {from_date} to {to_date}")
+#     #     logging.debug(f"Loaded {len(disclosures)} disclosures - {from_date} to {to_date}")
 #     #     nw_disclosures = scraper.filter_kap_news_and_extract_content(disclosures, bist_50.BIST_50_SYMBOLS)
 #     #     scraper.save_disclosures_json(nw_disclosures, from_date, to_date, "kap/data_with_content_bist50")
-#     #     print(f"Saved {len(nw_disclosures)} disclosures - {from_date} to {to_date} ")
+#     #     logging.debug(f"Saved {len(nw_disclosures)} disclosures - {from_date} to {to_date} ")
 #     for i in range(2017,2025):
 #         cnt = 0
 #         from_date   = f"{i}-01-01"
@@ -412,23 +412,23 @@ class KapNewsScraper(AbstractNewsScraper):
 #         file_name = f"kap/data_with_content_bist50/kap_disclosures_{from_date}_{to_date}.json"
 #         disclosures =  scraper.load_kap_news_from_json_files(file_name)
 #         news_list = scraper.convert_kapnews_to_news(disclosures)
-#         print(f"Converted {len(news_list)} disclosures to news")
+#         logging.debug(f"Converted {len(news_list)} disclosures to news")
 #         db_file = f"kap/data_with_content_bist50_general_class/news_{from_date}_{to_date}.json"
 #         scraper.save_news_to_json(news_list,db_file)
 #     # try to fetch single disclosure's aciklamalar ODA ODA
 #     # index = 988819
-#     # print(scraper.scrape_disclosure_by_index_ODA_ODA(index))
-#     # logging.info("Done")
+#     # logging.debug(scraper.scrape_disclosure_by_index_ODA_ODA(index))
+#     # logging.debug("Done")
 #     # index = 1388482
 #     # disclosure_details = scraper.scrape_disclosure_by_index_ODA_ODA(index)
-#     # print(disclosure_details["content"])  # Print the content directly
+#     # logging.debug(disclosure_details["content"])  # logging.debug the content directly
 
 #     # try to fetch single disclosure's aciklamalar ODA STT
 #     # index = 1365798
 #     # disclosure_details = scraper.scrape_disclosure_by_index_ODA_STT(index)
-#     # print(disclosure_details)  # Print the content directly
-#     # print()
+#     # logging.debug(disclosure_details)  # logging.debug the content directly
+#     # logging.debug()
 #     # index = 1365794
 #     # disclosure_details = scraper.scrape_disclosure_by_index_ODA_STT(index)
-#     # print(disclosure_details)  # Print the content directly
+#     # logging.debug(disclosure_details)  # logging.debug the content directly
     

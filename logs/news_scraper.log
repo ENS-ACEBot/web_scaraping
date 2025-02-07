@@ -1,0 +1,336 @@
+2025-02-07 21:58:29,367 - INFO - SQLLite database initialized
+2025-02-07 21:58:29,367 - INFO - Scraping data from MYNET : interval 2025-02-07
+2025-02-07 21:58:30,738 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'MYNET' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 21:58:30,738 - INFO - --------------------------------------------------
+2025-02-07 21:58:30,738 - INFO - Last news in the database for MYNET : 2025-02-06 20:40:25
+2025-02-07 21:58:30,738 - INFO - --------------------------------------------------
+2025-02-07 21:58:30,738 - INFO - --------------------------------------------------
+2025-02-07 21:58:30,738 - INFO - Scraped 14 news from MYNET
+2025-02-07 21:58:30,738 - INFO - --------------------------------------------------
+2025-02-07 21:58:30,739 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:58:30,740 - INFO - Trying to save each news one by one...
+2025-02-07 21:58:30,740 - INFO - 1/14
+2025-02-07 21:58:30,755 - INFO - Saved 4 kiloluk fiyatı çeyrek altınla başa baş gidiyor! to the database.
+2025-02-07 21:58:30,755 - INFO - 2/14
+2025-02-07 21:58:30,756 - INFO - Saved Bankalar tüm hizmetlerinde fiyat artırdı! to the database.
+2025-02-07 21:58:30,756 - INFO - 3/14
+2025-02-07 21:58:30,757 - INFO - Saved MB'den dikkat çeken faiz açıklaması to the database.
+2025-02-07 21:58:30,757 - INFO - 4/14
+2025-02-07 21:58:30,758 - INFO - Saved 18 ilde hiç hile yapılmadı! İşte gıdada en güvenli şehirler to the database.
+2025-02-07 21:58:30,758 - INFO - 5/14
+2025-02-07 21:58:30,759 - INFO - Saved Tekirdağ ve İstanbul'da da yetişiyor... to the database.
+2025-02-07 21:58:30,759 - INFO - 6/14
+2025-02-07 21:58:30,760 - INFO - Saved Bankalar yüzde 0 faiz ile kredi veriyor to the database.
+2025-02-07 21:58:30,760 - INFO - 7/14
+2025-02-07 21:58:30,761 - INFO - Saved Başkan Karahan'dan tüketici kredisi açıklaması to the database.
+2025-02-07 21:58:30,761 - INFO - 8/14
+2025-02-07 21:58:30,762 - INFO - Saved Başkan Karahan açıkladı! 2025'in enflasyon beklentisi değişti to the database.
+2025-02-07 21:58:30,762 - INFO - 9/14
+2025-02-07 21:58:30,763 - INFO - Saved Kredi faizleri düşüyor! to the database.
+2025-02-07 21:58:30,763 - INFO - 10/14
+2025-02-07 21:58:30,764 - INFO - Saved 7 Şubat ekonomi başlıkları to the database.
+2025-02-07 21:58:30,764 - INFO - 11/14
+2025-02-07 21:58:30,764 - INFO - Saved Dolar/TL kurunda günün ilk rakamları to the database.
+2025-02-07 21:58:30,764 - INFO - 12/14
+2025-02-07 21:58:30,765 - INFO - Saved Altının yeni rakibi belli oldu! to the database.
+2025-02-07 21:58:30,765 - INFO - 13/14
+2025-02-07 21:58:30,766 - INFO - Saved Maliye artık kasanızda oturuyor! to the database.
+2025-02-07 21:58:30,766 - INFO - 14/14
+2025-02-07 21:58:30,766 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:58:30,766 - INFO - Scraping data from KAP : interval 2025-02-07
+2025-02-07 21:58:31,692 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'KAP' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 21:58:31,692 - INFO - --------------------------------------------------
+2025-02-07 21:58:31,692 - INFO - Last news in the database for KAP : 2025-02-06 19:59:00
+2025-02-07 21:58:31,692 - INFO - --------------------------------------------------
+2025-02-07 21:58:31,692 - INFO - --------------------------------------------------
+2025-02-07 21:58:31,692 - INFO - Scraped 5 news from KAP
+2025-02-07 21:58:31,692 - INFO - --------------------------------------------------
+2025-02-07 21:58:31,694 - INFO - Saved 5 news to the database.
+2025-02-07 21:58:31,694 - INFO - Scraping data from BIGPARA : interval 2025-02-07
+2025-02-07 21:59:17,662 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'BIGPARA' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 21:59:17,662 - INFO - --------------------------------------------------
+2025-02-07 21:59:17,662 - INFO - Last news in the database for BIGPARA : 2025-02-06 23:16:00
+2025-02-07 21:59:17,662 - INFO - --------------------------------------------------
+2025-02-07 21:59:17,662 - INFO - --------------------------------------------------
+2025-02-07 21:59:17,662 - INFO - Scraped 59 news from BIGPARA
+2025-02-07 21:59:17,663 - INFO - --------------------------------------------------
+2025-02-07 21:59:17,663 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,663 - INFO - Trying to save each news one by one...
+2025-02-07 21:59:17,663 - INFO - 1/59
+2025-02-07 21:59:17,663 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,663 - INFO - 2/59
+2025-02-07 21:59:17,664 - INFO - Saved THY, ocak ayında 6,8 milyon yolcu taşıdı to the database.
+2025-02-07 21:59:17,664 - INFO - 3/59
+2025-02-07 21:59:17,664 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,664 - INFO - 4/59
+2025-02-07 21:59:17,664 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,664 - INFO - 5/59
+2025-02-07 21:59:17,664 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,664 - INFO - 6/59
+2025-02-07 21:59:17,664 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,664 - INFO - 7/59
+2025-02-07 21:59:17,665 - INFO - Saved THY'nin yolcu sayısı arttı to the database.
+2025-02-07 21:59:17,665 - INFO - 8/59
+2025-02-07 21:59:17,666 - INFO - Saved ABD'de tarım dışı istihdam düşük kaldı to the database.
+2025-02-07 21:59:17,666 - INFO - 9/59
+2025-02-07 21:59:17,667 - INFO - Saved ABD tarım dışı istihdam verisi Ocak ayı ne kadar, yüzde kaç oldu? Küresel piyasalar için kritik veriler açıklandı to the database.
+2025-02-07 21:59:17,667 - INFO - 10/59
+2025-02-07 21:59:17,668 - INFO - Saved ENFLASYON TAHMİNİ 2025 || Merkez Bankası 2025 yılı enflasyon tahmini ne kadar, yüzde kaç? to the database.
+2025-02-07 21:59:17,668 - INFO - 11/59
+2025-02-07 21:59:17,669 - INFO - Saved Bakan Bayraktar'dan Somali mesajı: İş birliği süreci başlattık to the database.
+2025-02-07 21:59:17,670 - INFO - 12/59
+2025-02-07 21:59:17,671 - INFO - Saved Şişecam'dan Kuzey İtalya'daki üretime geçici ara to the database.
+2025-02-07 21:59:17,671 - INFO - 13/59
+2025-02-07 21:59:17,672 - INFO - Saved Ford araçlarını geri çağırıyor to the database.
+2025-02-07 21:59:17,672 - INFO - 14/59
+2025-02-07 21:59:17,673 - INFO - Saved 2025 sonunda esnek mi çalışacağız? İşte olması beklenen değişiklikler to the database.
+2025-02-07 21:59:17,673 - INFO - 15/59
+2025-02-07 21:59:17,674 - INFO - Saved Merkez Bankası faiz kararı ne zaman açıklanacak, Şubat ayında açıklanacak mı? TCMB PPK Toplantı Takvimi! Bu ay faiz kararı açıklan to the database.
+2025-02-07 21:59:17,674 - INFO - 16/59
+2025-02-07 21:59:17,676 - INFO - Saved Toyota 140 bin aracı geri çağırıyor! İşte etkilenen modeller to the database.
+2025-02-07 21:59:17,676 - INFO - 17/59
+2025-02-07 21:59:17,676 - INFO - Saved Porsche motor gamını geliştirecek! Hibrite yöneliyor to the database.
+2025-02-07 21:59:17,677 - INFO - 18/59
+2025-02-07 21:59:17,678 - INFO - Saved TEKNOFEST Hava Savunma Sistemleri Yarışması için başvurular devam ediyor to the database.
+2025-02-07 21:59:17,678 - INFO - 19/59
+2025-02-07 21:59:17,679 - INFO - Saved Her şeyiyle yerli ve milli metro hattı to the database.
+2025-02-07 21:59:17,679 - INFO - 20/59
+2025-02-07 21:59:17,681 - INFO - Saved Sigorta sektöründe dev satış to the database.
+2025-02-07 21:59:17,681 - INFO - 21/59
+2025-02-07 21:59:17,681 - INFO - Saved Merkez Bankası'ndan hükümete Açık Mektup to the database.
+2025-02-07 21:59:17,682 - INFO - 22/59
+2025-02-07 21:59:17,682 - INFO - Saved ‘10 milyar içecek kartonunu geri dönüştürdük’ to the database.
+2025-02-07 21:59:17,682 - INFO - 23/59
+2025-02-07 21:59:17,683 - INFO - Saved Bakan Bayraktar Hatay'da depremzede aileleri ziyaret etti to the database.
+2025-02-07 21:59:17,683 - INFO - 24/59
+2025-02-07 21:59:17,684 - INFO - Saved Petrol 74.5 dolar seviyesinde to the database.
+2025-02-07 21:59:17,684 - INFO - 25/59
+2025-02-07 21:59:17,685 - INFO - Saved Son dakika... TCMB Başkanı Karahan enflasyon hedeflerini açıkladı to the database.
+2025-02-07 21:59:17,685 - INFO - 26/59
+2025-02-07 21:59:17,686 - INFO - Saved Ocak ayının kazandıranı belli oldu to the database.
+2025-02-07 21:59:17,686 - INFO - 27/59
+2025-02-07 21:59:17,688 - INFO - Saved Borsa İstanbul 10 bin puana yaklaştı to the database.
+2025-02-07 21:59:17,688 - INFO - 28/59
+2025-02-07 21:59:17,690 - INFO - Saved Dev bankadan hisse yorumu: Yatırımcılar akın edecek to the database.
+2025-02-07 21:59:17,690 - INFO - 29/59
+2025-02-07 21:59:17,691 - INFO - Saved Herkes şatafat bekliyordu... Milyarder isim bugün mütevazi düğünle evleniyor to the database.
+2025-02-07 21:59:17,691 - INFO - 30/59
+2025-02-07 21:59:17,692 - INFO - Saved Bakanlık lüks otomobil fiyatına gemi satıyor... İşte özellikleri to the database.
+2025-02-07 21:59:17,692 - INFO - 31/59
+2025-02-07 21:59:17,693 - INFO - Saved Çin'den ABD'ye şok! Calvin Klein ve Tommy Hilfiger'ı kötü günler mi bekliyor? to the database.
+2025-02-07 21:59:17,693 - INFO - 32/59
+2025-02-07 21:59:17,693 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,693 - INFO - 33/59
+2025-02-07 21:59:17,693 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,693 - INFO - 34/59
+2025-02-07 21:59:17,695 - INFO - Saved ALTIN FİYATLARI SON DURUM 7 ŞUBAT CANLI || Altın haftayı zirvede kapatıyor! Cumhuriyet altını, çeyrek ve gram altın fiyatları bugü to the database.
+2025-02-07 21:59:17,695 - INFO - 35/59
+2025-02-07 21:59:17,695 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,695 - INFO - 36/59
+2025-02-07 21:59:17,695 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:17,695 - INFO - 37/59
+2025-02-07 21:59:17,696 - INFO - Saved Hindistan'dan 5 yıl sonra faiz indirimi to the database.
+2025-02-07 21:59:17,696 - INFO - 38/59
+2025-02-07 21:59:17,697 - INFO - Saved BYD hisseleri yüzde 20 yükseldi to the database.
+2025-02-07 21:59:17,697 - INFO - 39/59
+2025-02-07 21:59:17,698 - INFO - Saved Paynet'in satışına onay to the database.
+2025-02-07 21:59:17,698 - INFO - 40/59
+2025-02-07 21:59:17,699 - INFO - Saved Tesla'dan büyük zam to the database.
+2025-02-07 21:59:17,699 - INFO - 41/59
+2025-02-07 21:59:17,701 - INFO - Saved Amazon hisseleri sert düştü to the database.
+2025-02-07 21:59:17,701 - INFO - 42/59
+2025-02-07 21:59:17,701 - INFO - Saved Japonlar para harcamaya başladı to the database.
+2025-02-07 21:59:17,702 - INFO - 43/59
+2025-02-07 21:59:17,702 - INFO - Saved Meksika faiz indirdi to the database.
+2025-02-07 21:59:17,702 - INFO - 44/59
+2025-02-07 21:59:17,704 - INFO - Saved Venbey Yatırım'ın faaliyetleri durdu to the database.
+2025-02-07 21:59:17,704 - INFO - 45/59
+2025-02-07 21:59:17,706 - INFO - Saved Son dakika... Altın rekor kırdı to the database.
+2025-02-07 21:59:17,706 - INFO - 46/59
+2025-02-07 21:59:17,707 - INFO - Saved 26 internet sitesinin kapatılması istendi to the database.
+2025-02-07 21:59:17,707 - INFO - 47/59
+2025-02-07 21:59:17,708 - INFO - Saved Üç şirketin sermaye artırımına onay to the database.
+2025-02-07 21:59:17,708 - INFO - 48/59
+2025-02-07 21:59:17,709 - INFO - Saved Sahadan çekilmediler to the database.
+2025-02-07 21:59:17,709 - INFO - 49/59
+2025-02-07 21:59:17,710 - INFO - Saved Sosyal konutlara yıl sonunda başlanacak to the database.
+2025-02-07 21:59:17,710 - INFO - 50/59
+2025-02-07 21:59:17,711 - INFO - Saved Altında jeopolitik risk oynaklığı to the database.
+2025-02-07 21:59:17,711 - INFO - 51/59
+2025-02-07 21:59:17,712 - INFO - Saved Beyaz eşyada kritik eşik to the database.
+2025-02-07 21:59:17,712 - INFO - 52/59
+2025-02-07 21:59:17,713 - INFO - Saved Şirketleri bekleyen üç küresel tehlike to the database.
+2025-02-07 21:59:17,713 - INFO - 53/59
+2025-02-07 21:59:17,714 - INFO - Saved ‘10 milyar içecek kartonunu geri dönüştürdük’ to the database.
+2025-02-07 21:59:17,714 - INFO - 54/59
+2025-02-07 21:59:17,715 - INFO - Saved Bakanlar deprem bölgesinde yapılan yardım ve yatırımları değerlendirdi: Sanayi ve tarımı onarma hamlesi to the database.
+2025-02-07 21:59:17,715 - INFO - 55/59
+2025-02-07 21:59:17,716 - INFO - Saved İki şirketin halka arzına onay to the database.
+2025-02-07 21:59:17,716 - INFO - 56/59
+2025-02-07 21:59:17,717 - INFO - Saved Elon Musk'a kötü haber! Yetkileri sınırlandırıldı to the database.
+2025-02-07 21:59:17,717 - INFO - 57/59
+2025-02-07 21:59:17,718 - INFO - Saved ABD borsaları dalgalı seyretti to the database.
+2025-02-07 21:59:17,718 - INFO - 58/59
+2025-02-07 21:59:17,719 - INFO - Saved IMF'ten Japonya tahmini to the database.
+2025-02-07 21:59:17,719 - INFO - 59/59
+2025-02-07 21:59:17,720 - INFO - Saved Deprem hasarlı otolara 2.1 milyar TL tazminat to the database.
+2025-02-07 21:59:17,720 - INFO - --------------------------------------------------
+2025-02-07 21:59:17,720 - INFO - Scraped total 78 news articles.
+2025-02-07 21:59:17,720 - INFO - --------------------------------------------------
+2025-02-07 21:59:17,720 - INFO - SQLLite database closed !
+2025-02-07 21:59:38,013 - INFO - SQLLite database initialized
+2025-02-07 21:59:38,013 - INFO - Scraping data from MYNET : interval 2025-02-07
+2025-02-07 21:59:38,574 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'MYNET' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 21:59:38,574 - INFO - --------------------------------------------------
+2025-02-07 21:59:38,574 - INFO - Last news in the database for MYNET : 2025-02-07 16:24:26
+2025-02-07 21:59:38,574 - INFO - --------------------------------------------------
+2025-02-07 21:59:38,574 - INFO - --------------------------------------------------
+2025-02-07 21:59:38,574 - INFO - Scraped 1 news from MYNET
+2025-02-07 21:59:38,574 - INFO - --------------------------------------------------
+2025-02-07 21:59:38,574 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:38,574 - INFO - Trying to save each news one by one...
+2025-02-07 21:59:38,574 - INFO - 1/1
+2025-02-07 21:59:38,574 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:38,574 - INFO - Scraping data from KAP : interval 2025-02-07
+2025-02-07 21:59:39,410 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'KAP' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 21:59:39,410 - INFO - --------------------------------------------------
+2025-02-07 21:59:39,411 - INFO - Last news in the database for KAP : 2025-02-07 18:35:00
+2025-02-07 21:59:39,411 - INFO - --------------------------------------------------
+2025-02-07 21:59:39,411 - INFO - --------------------------------------------------
+2025-02-07 21:59:39,411 - INFO - Scraped 1 news from KAP
+2025-02-07 21:59:39,411 - INFO - --------------------------------------------------
+2025-02-07 21:59:39,411 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:39,411 - INFO - Trying to save each news one by one...
+2025-02-07 21:59:39,411 - INFO - 1/1
+2025-02-07 21:59:39,411 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 21:59:39,411 - INFO - Scraping data from BIGPARA : interval 2025-02-07
+2025-02-07 22:00:05,880 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'BIGPARA' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:00:05,880 - INFO - --------------------------------------------------
+2025-02-07 22:00:05,880 - INFO - Last news in the database for BIGPARA : 2025-02-07 19:11:00
+2025-02-07 22:00:05,880 - INFO - --------------------------------------------------
+2025-02-07 22:00:05,880 - INFO - --------------------------------------------------
+2025-02-07 22:00:05,880 - INFO - Scraped 2 news from BIGPARA
+2025-02-07 22:00:05,880 - INFO - --------------------------------------------------
+2025-02-07 22:00:05,880 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:05,880 - INFO - Trying to save each news one by one...
+2025-02-07 22:00:05,880 - INFO - 1/2
+2025-02-07 22:00:05,881 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:05,881 - INFO - 2/2
+2025-02-07 22:00:05,881 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:05,881 - INFO - --------------------------------------------------
+2025-02-07 22:00:05,881 - INFO - Scraped total 4 news articles.
+2025-02-07 22:00:05,881 - INFO - --------------------------------------------------
+2025-02-07 22:00:05,881 - INFO - SQLLite database closed !
+2025-02-07 22:00:26,174 - INFO - SQLLite database initialized
+2025-02-07 22:00:26,175 - INFO - Scraping data from MYNET : interval 2025-02-07
+2025-02-07 22:00:26,622 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'MYNET' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:00:26,622 - INFO - --------------------------------------------------
+2025-02-07 22:00:26,622 - INFO - Last news in the database for MYNET : 2025-02-07 16:24:26
+2025-02-07 22:00:26,622 - INFO - --------------------------------------------------
+2025-02-07 22:00:26,622 - INFO - --------------------------------------------------
+2025-02-07 22:00:26,622 - INFO - Scraped 1 news from MYNET
+2025-02-07 22:00:26,622 - INFO - --------------------------------------------------
+2025-02-07 22:00:26,623 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:26,623 - INFO - Trying to save each news one by one...
+2025-02-07 22:00:26,623 - INFO - 1/1
+2025-02-07 22:00:26,623 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:26,623 - INFO - Scraping data from KAP : interval 2025-02-07
+2025-02-07 22:00:27,497 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'KAP' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:00:27,497 - INFO - --------------------------------------------------
+2025-02-07 22:00:27,497 - INFO - Last news in the database for KAP : 2025-02-07 18:35:00
+2025-02-07 22:00:27,497 - INFO - --------------------------------------------------
+2025-02-07 22:00:27,497 - INFO - --------------------------------------------------
+2025-02-07 22:00:27,497 - INFO - Scraped 1 news from KAP
+2025-02-07 22:00:27,497 - INFO - --------------------------------------------------
+2025-02-07 22:00:27,498 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:27,498 - INFO - Trying to save each news one by one...
+2025-02-07 22:00:27,498 - INFO - 1/1
+2025-02-07 22:00:27,498 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:27,498 - INFO - Scraping data from BIGPARA : interval 2025-02-07
+2025-02-07 22:00:39,617 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'BIGPARA' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:00:39,618 - INFO - --------------------------------------------------
+2025-02-07 22:00:39,618 - INFO - Last news in the database for BIGPARA : 2025-02-07 19:11:00
+2025-02-07 22:00:39,618 - INFO - --------------------------------------------------
+2025-02-07 22:00:39,618 - INFO - --------------------------------------------------
+2025-02-07 22:00:39,618 - INFO - Scraped 2 news from BIGPARA
+2025-02-07 22:00:39,618 - INFO - --------------------------------------------------
+2025-02-07 22:00:39,618 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:39,618 - INFO - Trying to save each news one by one...
+2025-02-07 22:00:39,618 - INFO - 1/2
+2025-02-07 22:00:39,618 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:39,618 - INFO - 2/2
+2025-02-07 22:00:39,618 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:00:39,618 - INFO - --------------------------------------------------
+2025-02-07 22:00:39,618 - INFO - Scraped total 4 news articles.
+2025-02-07 22:00:39,618 - INFO - --------------------------------------------------
+2025-02-07 22:00:39,618 - INFO - SQLLite database closed !
+2025-02-07 22:01:10,823 - INFO - SQLLite database initialized
+2025-02-07 22:01:10,824 - INFO - Scraping data from MYNET : interval 2025-02-07
+2025-02-07 22:01:11,907 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'MYNET' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:01:11,907 - INFO - --------------------------------------------------
+2025-02-07 22:01:11,907 - INFO - Last news in the database for MYNET : 2025-02-07 16:24:26
+2025-02-07 22:01:11,907 - INFO - --------------------------------------------------
+2025-02-07 22:01:11,907 - INFO - --------------------------------------------------
+2025-02-07 22:01:11,907 - INFO - Scraped 1 news from MYNET
+2025-02-07 22:01:11,907 - INFO - --------------------------------------------------
+2025-02-07 22:01:11,907 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:01:11,908 - INFO - Trying to save each news one by one...
+2025-02-07 22:01:11,908 - INFO - 1/1
+2025-02-07 22:01:11,908 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:01:11,908 - INFO - Scraping data from KAP : interval 2025-02-07
+2025-02-07 22:01:12,728 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'KAP' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:01:12,728 - INFO - --------------------------------------------------
+2025-02-07 22:01:12,728 - INFO - Last news in the database for KAP : 2025-02-07 18:35:00
+2025-02-07 22:01:12,728 - INFO - --------------------------------------------------
+2025-02-07 22:01:12,728 - INFO - --------------------------------------------------
+2025-02-07 22:01:12,728 - INFO - Scraped 1 news from KAP
+2025-02-07 22:01:12,728 - INFO - --------------------------------------------------
+2025-02-07 22:01:12,728 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:01:12,728 - INFO - Trying to save each news one by one...
+2025-02-07 22:01:12,728 - INFO - 1/1
+2025-02-07 22:01:12,728 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:01:12,728 - INFO - Scraping data from BIGPARA : interval 2025-02-07
+2025-02-07 22:01:39,596 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'BIGPARA' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:01:39,597 - INFO - --------------------------------------------------
+2025-02-07 22:01:39,597 - INFO - Last news in the database for BIGPARA : 2025-02-07 19:11:00
+2025-02-07 22:01:39,597 - INFO - --------------------------------------------------
+2025-02-07 22:01:39,597 - INFO - --------------------------------------------------
+2025-02-07 22:01:39,597 - INFO - Scraped 2 news from BIGPARA
+2025-02-07 22:01:39,597 - INFO - --------------------------------------------------
+2025-02-07 22:01:39,597 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:01:39,597 - INFO - Trying to save each news one by one...
+2025-02-07 22:01:39,597 - INFO - 1/2
+2025-02-07 22:01:39,597 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:01:39,597 - INFO - 2/2
+2025-02-07 22:01:39,597 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:01:39,597 - INFO - --------------------------------------------------
+2025-02-07 22:01:39,597 - INFO - Scraped total 4 news articles.
+2025-02-07 22:01:39,597 - INFO - --------------------------------------------------
+2025-02-07 22:01:39,597 - INFO - SQLLite database closed !
+2025-02-07 22:01:59,797 - INFO - SQLLite database initialized
+2025-02-07 22:01:59,797 - INFO - Scraping data from MYNET : interval 2025-02-07
+2025-02-07 22:02:00,725 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'MYNET' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:02:00,726 - INFO - --------------------------------------------------
+2025-02-07 22:02:00,726 - INFO - Last news in the database for MYNET : 2025-02-07 16:24:26
+2025-02-07 22:02:00,726 - INFO - --------------------------------------------------
+2025-02-07 22:02:00,726 - INFO - --------------------------------------------------
+2025-02-07 22:02:00,726 - INFO - Scraped 1 news from MYNET
+2025-02-07 22:02:00,726 - INFO - --------------------------------------------------
+2025-02-07 22:02:00,726 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:02:00,726 - INFO - Trying to save each news one by one...
+2025-02-07 22:02:00,726 - INFO - 1/1
+2025-02-07 22:02:00,726 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:02:00,726 - INFO - Scraping data from KAP : interval 2025-02-07
+2025-02-07 22:02:01,576 - INFO - Query executed :[SELECT title,content,date_time,source,news_url FROM news WHERE source = 'KAP' ORDER BY date_time DESC LIMIT 1;] - 1 news fetched
+2025-02-07 22:02:01,576 - INFO - --------------------------------------------------
+2025-02-07 22:02:01,576 - INFO - Last news in the database for KAP : 2025-02-07 18:35:00
+2025-02-07 22:02:01,576 - INFO - --------------------------------------------------
+2025-02-07 22:02:01,576 - INFO - --------------------------------------------------
+2025-02-07 22:02:01,576 - INFO - Scraped 1 news from KAP
+2025-02-07 22:02:01,576 - INFO - --------------------------------------------------
+2025-02-07 22:02:01,576 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:02:01,576 - INFO - Trying to save each news one by one...
+2025-02-07 22:02:01,577 - INFO - 1/1
+2025-02-07 22:02:01,577 - ERROR - An error occurred while saving news to the database: UNIQUE constraint failed: news.news_url
+2025-02-07 22:02:01,577 - INFO - Scraping data from BIGPARA : interval 2025-02-07
+2025-02-07 22:02:18,778 - INFO - SQLLite database closed !

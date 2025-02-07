@@ -7,9 +7,6 @@ from common.new_class import News  # Assumes News has static method date_time_to
 from scrapers.abstract_news_scraper import AbstractNewsScraper
 import time
 
-logging.basicConfig(level=logging.INFO)
-
-
 
 class BigparaNewsScraper(AbstractNewsScraper):
     """
@@ -49,7 +46,7 @@ class BigparaNewsScraper(AbstractNewsScraper):
                     filtered_news.append(news)
             if flag == False: # if the news is not in the interval break the loop
                 break
-        logging.info(f"[Bigpara] Found {len(filtered_news)} news articles. Interval : {start_date} - {end_date}")
+        logging.debug(f"[Bigpara] Found {len(filtered_news)} news articles. Interval : {start_date} - {end_date}")
         # update all news content
         filtered_news = self.update_news_content(filtered_news)
         return filtered_news
@@ -105,7 +102,7 @@ class BigparaNewsScraper(AbstractNewsScraper):
                 
                 # Each news listing is contained in a <ul> within the table
                 news_items = news_tables[0].find_all("ul")
-                logging.info(f"Page {page_number}: Found {len(news_items)} news items.")
+                logging.debug(f"Page {page_number}: Found {len(news_items)} news items.")
 
                 for item in news_items:
                     # Extract title (assumes title is inside an h2 tag)
@@ -153,7 +150,7 @@ class BigparaNewsScraper(AbstractNewsScraper):
         :param news_list: List of News objects (with links already fetched).
         :return: The same list of News objects with their content property updated.
         """
-        logging.info("Starting to update news content for each news item.")
+        logging.debug("Starting to update news content for each news item.")
         updated_count = 0
         disrupted_count = 0
         total = len(news_list)
@@ -203,12 +200,12 @@ class BigparaNewsScraper(AbstractNewsScraper):
                     break
                 
         for idx, news in enumerate(news_list):
-            logging.info(f"Fetching content for news {idx + 1}/{total}: {news.title}")
+            logging.debug(f"Fetching content for news {idx + 1}/{total}: {news.title}")
             fetch_and_update(news, idx)
 
         # remove the news without content 
         news_list = [news for news in news_list if news.content]
-        logging.info(f"Finished updating news content. Updated: {len(news_list)}, Failed: {disrupted_count}")
+        logging.debug(f"Finished updating news content. Updated: {len(news_list)}, Failed: {disrupted_count}")
         return news_list
 
     def save_news_to_json(self, news_list: list[News], json_file_name: str = "all_news.json") -> None:
@@ -221,7 +218,7 @@ class BigparaNewsScraper(AbstractNewsScraper):
         news_dict_list = [news.to_dict() for news in news_list]
         with open(json_file_name, 'w', encoding='utf-8') as outfile:
             json.dump(news_dict_list, outfile, ensure_ascii=False, indent=4)
-        logging.info(f"Saved {len(news_list)} news items to {json_file_name}.")
+        logging.debug(f"Saved {len(news_list)} news items to {json_file_name}.")
 
     def read_news_from_json(self, json_file_name: str = "all_news.json") -> list[News]:
         """
@@ -233,5 +230,5 @@ class BigparaNewsScraper(AbstractNewsScraper):
         with open(json_file_name, 'r', encoding='utf-8') as json_file:
             data = json.load(json_file)
         news_list = [News.from_dict(item) for item in data]
-        logging.info(f"Loaded {len(news_list)} news items from {json_file_name}.")
+        logging.debug(f"Loaded {len(news_list)} news items from {json_file_name}.")
         return news_list

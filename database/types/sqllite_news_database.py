@@ -59,8 +59,7 @@ class SQLLiteNewsDatabase():
         except sqlite3.Error as e:
             logging.error(f"An error occurred while saving news to the database: {e}")
             self.connection.rollback()
-            
-            
+                       
     def get_all(self) -> list[News]:
         select_query = "SELECT title, content,date_time,source,news_url FROM news;"
         self.cursor.execute(select_query)
@@ -116,7 +115,7 @@ class SQLLiteNewsDatabase():
             source TEXT,
             news_url TEXT UNIQUE
         );
-        """
+        """    
         try:
             self.cursor.execute(create_table_query)
             self.connection.commit()
