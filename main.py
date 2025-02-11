@@ -82,7 +82,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,handlers=[file_handler, console_handler])
 
     # run the function every 5 minutes, send parameter to the function
-    schedule.every(20).seconds.do(scrape_and_save, database = database)
+    schedule.every(5).minutes.do(scrape_and_save, database = database)
     
     while True:
         schedule.run_pending()
