@@ -6,7 +6,7 @@ __pycache__/
 data/
 
 # Logs
-logs/
+logs/*.log
 *.log
 
 # OS-specific files
@@ -19,3 +19,10 @@ venv/
 
 # Distribution / packaging
 env/
+
+# For pid file
+*.pid
+
+# For nohut out file
+nohub.out
+
