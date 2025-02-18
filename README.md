@@ -50,4 +50,7 @@ python main.py
 
 ## Configuration
 - The SQLite database is located at data/sql_news.db.
-- 
+
+## OLD NEWS DATA's DRIVE LINK
+- the data is holding in the folders are moved to drive folder
+- https://drive.google.com/drive/folders/1abdh1h5vi87vGi30_9c_CEC6ta4EOkjS?usp=sharing
