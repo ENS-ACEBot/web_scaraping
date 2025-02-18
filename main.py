@@ -67,7 +67,17 @@ def scrape_and_save(database: SQLLiteNewsDatabase):
         
     except Exception as e:
         logging.error(f"An error occurred while scraping and saving news: {e}")
-    
+
+def read_config():
+    try:
+        with open("env/config.json", "r") as config_file:
+            config = json.load(config_file)
+    except FileNotFoundError:
+        logging.error("Configuration file not found. Using default values.")
+        config = {}
+    return config
+
+
 if __name__ == "__main__":
     
     # Save the PID to a file
@@ -76,17 +86,14 @@ if __name__ == "__main__":
         f.write(pid)
     
     # Read configuration file
-    try:
-        with open("env/config.json", "r") as config_file:
-            config = json.load(config_file)
-    except FileNotFoundError:
-        logging.error("Configuration file not found. Using default values.")
-        config = {}
+    config = read_config()
+    
     # log file
     log_file_path = config.get("log_file_path", "news_scraper.log") # if there is not value for log_file_path, use the default value
     # db file
     db_file_path = config.get("db_file_path", "sql_news.db")        # if there is not value for db_file_path, use the default value
-   
+    # period time 
+    scrape_period_seconds = config.get("scrape_period_seconds", 10)
 
     log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     # file handler
@@ -106,15 +113,30 @@ if __name__ == "__main__":
     # logging.basicConfig(level=logging.DEBUG)
     
     logging.info("News scraper started.")
+    logging.info(f"logfile = {log_file_path}")
+    logging.info(f"dbfile = {db_file_path}")
+    logging.info(f"scrape_period_seconds = {scrape_period_seconds}")
     
+    # create database object
     database = SQLLiteNewsDatabase(db_file_path)
-
     
-    # run the function every 5 minutes, send parameter to the function
-    #schedule.every(5).minutes.do(scrape_and_save, database = database)
-    schedule.every(10).seconds.do(scrape_and_save, database = database)
+    # function to update the schedule (period time)
+    def update_schedule():
+        config = read_config()
+        new_period_time_seconds = config.get("scrape_period_seconds", 10)
+        if new_period_time_seconds != scrape_period_seconds:
+            logging.info(f"Updating schedule period time to {new_period_time_seconds} seconds.")
+            schedule.clear()
+            schedule.every(new_period_time_seconds).seconds.do(scrape_and_save, database=database)
+            return new_period_time_seconds
+        return scrape_period_seconds
+    
+    # run the function every 5 minutes, send parameter to the function (initial schedule)
+    schedule.every(scrape_period_seconds).seconds.do(scrape_and_save, database = database)
+    
     while True:
         schedule.run_pending()
+        scrape_period_seconds = update_schedule()
         time.sleep(1)
         
     
