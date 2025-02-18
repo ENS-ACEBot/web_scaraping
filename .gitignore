@@ -1,3 +1,17 @@
 __pycache__/
 *.pyc
 .env
+
+# Database
+data/sql_news.db
+
+# Logs
+logs/
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
