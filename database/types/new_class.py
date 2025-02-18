@@ -9,10 +9,11 @@ class News:
     def __init__(self, title, source, news_url, content=None, date_time=None):
         self.title = title  # string
         self.content = content  # string
-        self.date_time = self.parse_date_time(date_time)  # datetime
+        self.date_time = News.parse_date_time(date_time)  # datetime
         self.source = source  # string
         self.news_url = news_url  # string
-
+        
+    @classmethod
     def parse_date_time(self, date_time_str):
         if isinstance(date_time_str, datetime):
             return date_time_str
@@ -46,7 +47,7 @@ class News:
         date_time = data.get("date_time")
         if date_time:
             # Parse date_time string to a datetime object, assuming a specific format
-            date_time = datetime.strptime(date_time, '%Y-%m-%d %H:%M')
+            date_time = News.parse_date_time(date_time)
         # Return an instance of `News` with data from the dictionary
         return cls(
             title=data.get("title"),
