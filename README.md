@@ -36,11 +36,15 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-4. Create data and log folder for database and logger:
+4. Create env folder and write your database and log file path to there
 ```sh
-mkdir data 
-mkdir logs
+mkdir env
 ```
+then add config.json file to that folder the 
+{
+    "log_file_path": "path/to/logfile",
+    "db_file_path": "path/to/databasefile"
+}
 
 
 ## Running the Scraper

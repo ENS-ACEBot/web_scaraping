@@ -126,6 +126,12 @@ class SQLLiteNewsDatabase():
             return False
         pass 
     
+    def count_news(self):
+        count_query = "SELECT COUNT(*) FROM news;"
+        self.cursor.execute(count_query)
+        count = self.cursor.fetchone()[0]
+        return count
+    
     def __del__(self):
         self.connection.close()
         logging.info("SQLLite database closed !")

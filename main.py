@@ -10,6 +10,9 @@ import schedule
 import time
 from logging.handlers import RotatingFileHandler
 import os
+import json
+
+total_saved_run = 0
 
 def scrape_and_save(database: SQLLiteNewsDatabase):
     try:
@@ -25,6 +28,8 @@ def scrape_and_save(database: SQLLiteNewsDatabase):
         scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper()]
 
         all_news = []
+        
+        past_news_count = database.count_news()
         
         for scraper in scrapers:
             logging.info(f"Scraping data from {scraper.source} : interval {fetching_date_str}")
@@ -50,15 +55,19 @@ def scrape_and_save(database: SQLLiteNewsDatabase):
             logging.info(50*"-")
             
             database.save_news(scraper_news)
-            
+        
+        current_news_count = database.count_news()
+        
         logging.info(50*"-")
         logging.info(f"Scraped total {len(all_news)} news articles.")
+        logging.info(f"Added new {current_news_count - past_news_count} news articles to the database.")
+        logging.info(f"Current total news count in the database : {current_news_count}")
         logging.info(50*"-")
+        
         
     except Exception as e:
         logging.error(f"An error occurred while scraping and saving news: {e}")
     
-
 if __name__ == "__main__":
     
     # Save the PID to a file
@@ -66,14 +75,23 @@ if __name__ == "__main__":
     with open("process.pid", "w") as f:
         f.write(pid)
     
-    # set up logging
-    log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    # Read configuration file
+    try:
+        with open("env/config.json", "r") as config_file:
+            config = json.load(config_file)
+    except FileNotFoundError:
+        logging.error("Configuration file not found. Using default values.")
+        config = {}
     # log file
-    log_file = "logs/news_scraper.log"
-    
+    log_file_path = config.get("log_file_path", "news_scraper.log") # if there is not value for log_file_path, use the default value
+    # db file
+    db_file_path = config.get("db_file_path", "sql_news.db")        # if there is not value for db_file_path, use the default value
+   
+
+    log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     # file handler
     # create new file for each 5MB and keep 2 backup files
-    file_handler = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=2)
+    file_handler = RotatingFileHandler(log_file_path, maxBytes=5*1024*1024, backupCount=2)
     file_handler.setFormatter(log_formatter)
     file_handler.setLevel(logging.INFO)
     
@@ -89,7 +107,7 @@ if __name__ == "__main__":
     
     logging.info("News scraper started.")
     
-    database = SQLLiteNewsDatabase("data/sql_news.db")
+    database = SQLLiteNewsDatabase(db_file_path)
 
     
     # run the function every 5 minutes, send parameter to the function
