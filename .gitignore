@@ -19,3 +19,9 @@ venv/
 
 # Distribution / packaging
 env/
+
+# pid file
+*.pid
+
+# nohubout file 
+nohup.out
