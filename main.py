@@ -9,6 +9,7 @@ from common.new_class import News
 import schedule
 import time
 from logging.handlers import RotatingFileHandler
+import os
 
 def scrape_and_save(database: SQLLiteNewsDatabase):
     try:
@@ -60,7 +61,10 @@ def scrape_and_save(database: SQLLiteNewsDatabase):
 
 if __name__ == "__main__":
     
-    database = SQLLiteNewsDatabase("data/sql_news.db")
+    # Save the PID to a file
+    pid = str(os.getpid())
+    with open("process.pid", "w") as f:
+        f.write(pid)
     
     # set up logging
     log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -76,14 +80,21 @@ if __name__ == "__main__":
     # console handler
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(log_formatter)
-    console_handler.setLevel(logging.DEBUG)
+    console_handler.setLevel(logging.INFO)
     
     # set up logging
-    logging.basicConfig(level=logging.INFO,handlers=[file_handler, console_handler])
-
-    # run the function every 5 minutes, send parameter to the function
-    schedule.every(5).minutes.do(scrape_and_save, database = database)
+    logging.basicConfig(level=logging.DEBUG,handlers=[file_handler, console_handler])
     
+    # logging.basicConfig(level=logging.DEBUG)
+    
+    logging.info("News scraper started.")
+    
+    database = SQLLiteNewsDatabase("data/sql_news.db")
+
+    
+    # run the function every 5 minutes, send parameter to the function
+    #schedule.every(5).minutes.do(scrape_and_save, database = database)
+    schedule.every(10).seconds.do(scrape_and_save, database = database)
     while True:
         schedule.run_pending()
         time.sleep(1)
