@@ -36,13 +36,6 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-4. Create data and log folder for database and logger:
-```sh
-mkdir data 
-mkdir logs
-```
-
-
 ## Running the Scraper
 - The script can be runned in background task, 
 -- nohub will be used to run task in background even terminal window is closed
@@ -63,7 +56,29 @@ nohup python3 main.py &
 
 
 ## Configuration
-- The SQLite database is located at data/sql_news.db.
+
+The configuration for the news scraper is stored in the `env/config.json` file. This file contains the paths for the log file and the database file, as well as the period time for scraping.(at the begining you should create env file)
+
+### Example `config.json`:
+
+```json
+{
+    "log_file_path": "logs/news_scraper.log",
+    "db_file_path": "data/sql_news.db",
+    "scrape_period_seconds": 10
+}
+```
+
+### Configuration Parameters:
+
+- `log_file_path`: The path to the log file where the scraping process logs will be saved.
+- `db_file_path`: The path to the database file where the news articles will be saved.
+- `scrape_period_seconds`: The period time in seconds for running the scraper. This value can be changed dynamically while the script is running.
+
+## Updating Schedule Time
+
+To change the period time for running the scraper dynamically, update the `scrape_period_seconds` value in the `env/config.json` file. The script will automatically adjust its period based on the new value.
+
 
 ## OLD NEWS DATA's DRIVE LINK
 - the data is holding in the folders are moved to drive folder

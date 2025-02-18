@@ -10,6 +10,9 @@ import schedule
 import time
 from logging.handlers import RotatingFileHandler
 import os
+import json
+
+total_saved_run = 0
 
 def scrape_and_save(database: SQLLiteNewsDatabase):
     try:
@@ -25,6 +28,8 @@ def scrape_and_save(database: SQLLiteNewsDatabase):
         scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper()]
 
         all_news = []
+        
+        past_news_count = database.count_news()
         
         for scraper in scrapers:
             logging.info(f"Scraping data from {scraper.source} : interval {fetching_date_str}")
@@ -50,14 +55,28 @@ def scrape_and_save(database: SQLLiteNewsDatabase):
             logging.info(50*"-")
             
             database.save_news(scraper_news)
-            
+        
+        current_news_count = database.count_news()
+        
         logging.info(50*"-")
         logging.info(f"Scraped total {len(all_news)} news articles.")
+        logging.info(f"Added new {current_news_count - past_news_count} news articles to the database.")
+        logging.info(f"Current total news count in the database : {current_news_count}")
         logging.info(50*"-")
+        
         
     except Exception as e:
         logging.error(f"An error occurred while scraping and saving news: {e}")
-    
+
+def read_config():
+    try:
+        with open("env/config.json", "r") as config_file:
+            config = json.load(config_file)
+    except FileNotFoundError:
+        logging.error("Configuration file not found. Using default values.")
+        config = {}
+    return config
+
 
 if __name__ == "__main__":
     
@@ -66,14 +85,20 @@ if __name__ == "__main__":
     with open("process.pid", "w") as f:
         f.write(pid)
     
-    # set up logging
-    log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    # log file
-    log_file = "logs/news_scraper.log"
+    # Read configuration file
+    config = read_config()
     
+    # log file
+    log_file_path = config.get("log_file_path", "news_scraper.log") # if there is not value for log_file_path, use the default value
+    # db file
+    db_file_path = config.get("db_file_path", "sql_news.db")        # if there is not value for db_file_path, use the default value
+    # period time 
+    scrape_period_seconds = config.get("scrape_period_seconds", 10)
+
+    log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     # file handler
     # create new file for each 5MB and keep 2 backup files
-    file_handler = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=2)
+    file_handler = RotatingFileHandler(log_file_path, maxBytes=5*1024*1024, backupCount=2)
     file_handler.setFormatter(log_formatter)
     file_handler.setLevel(logging.INFO)
     
@@ -88,15 +113,30 @@ if __name__ == "__main__":
     # logging.basicConfig(level=logging.DEBUG)
     
     logging.info("News scraper started.")
+    logging.info(f"logfile = {log_file_path}")
+    logging.info(f"dbfile = {db_file_path}")
+    logging.info(f"scrape_period_seconds = {scrape_period_seconds}")
     
-    database = SQLLiteNewsDatabase("data/sql_news.db")
-
+    # create database object
+    database = SQLLiteNewsDatabase(db_file_path)
     
-    # run the function every 5 minutes, send parameter to the function
-    #schedule.every(5).minutes.do(scrape_and_save, database = database)
-    schedule.every(10).seconds.do(scrape_and_save, database = database)
+    # function to update the schedule (period time)
+    def update_schedule():
+        config = read_config()
+        new_period_time_seconds = config.get("scrape_period_seconds", 10)
+        if new_period_time_seconds != scrape_period_seconds:
+            logging.info(f"Updating schedule period time to {new_period_time_seconds} seconds.")
+            schedule.clear()
+            schedule.every(new_period_time_seconds).seconds.do(scrape_and_save, database=database)
+            return new_period_time_seconds
+        return scrape_period_seconds
+    
+    # run the function every 5 minutes, send parameter to the function (initial schedule)
+    schedule.every(scrape_period_seconds).seconds.do(scrape_and_save, database = database)
+    
     while True:
         schedule.run_pending()
+        scrape_period_seconds = update_schedule()
         time.sleep(1)
         
     

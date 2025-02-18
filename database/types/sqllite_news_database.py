@@ -33,7 +33,7 @@ class SQLLiteNewsDatabase():
             logging.error(f"An error occurred while saving news to the database: {e}")
             self.connection.rollback()
             # Save each news one by one in case of error
-            logging.info("Trying to save each news one by one...")
+            logging.error("Trying to save each news one by one...")
             for idx,news in enumerate(news_list):
                 logging.info(f"{idx+1}/{len(news_list)}")
                 self.save_new(news)
@@ -55,9 +55,9 @@ class SQLLiteNewsDatabase():
         try:
             self.cursor.execute(insert_query, news_data)
             self.connection.commit()
-            logging.info(f"Saved {news.title} to the database.")
+            logging.info(f"Saved {news.news_url} to the database.")
         except sqlite3.Error as e:
-            logging.error(f"An error occurred while saving news to the database: {e}")
+            logging.debug(f"An error occurred while saving news to the database: {e}")
             self.connection.rollback()
                        
     def get_all(self) -> list[News]:
@@ -98,7 +98,7 @@ class SQLLiteNewsDatabase():
             news_list_tuples = self.cursor.fetchall()
             news_list = [News(title =title, content=content, date_time=date_time, source = source, news_url = news_url) 
                         for title, content, date_time, source, news_url in news_list_tuples]
-            logging.info(f"Query executed :[{get_query_string}] - {len(news_list)} news fetched")
+            logging.debug(f"Query executed :[{get_query_string}] - {len(news_list)} news fetched")
             return news_list
         except Exception as e:
             logging.error(f"Query [{get_query_string}] couldn't executed : {e}")
@@ -125,6 +125,12 @@ class SQLLiteNewsDatabase():
             self.connection.rollback()
             return False
         pass 
+    
+    def count_news(self):
+        count_query = "SELECT COUNT(*) FROM news;"
+        self.cursor.execute(count_query)
+        count = self.cursor.fetchone()[0]
+        return count
     
     def __del__(self):
         self.connection.close()
