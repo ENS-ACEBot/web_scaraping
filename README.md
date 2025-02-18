@@ -44,9 +44,23 @@ mkdir logs
 
 
 ## Running the Scraper
+- The script can be runned in background task, 
+-- nohub will be used to run task in background even terminal window is closed
+-- pid of program will be saved to process.pid file
+
+- check if the process is running
 ```sh
-python main.py
+ps -p $(cat process.pid)
 ```
+- Stop the process
+```sh
+kill $(cat process.pid)
+```
+- start the process (& is for running it at background)
+```sh
+nohup python3 main.py &
+```
+
 
 ## Configuration
 - The SQLite database is located at data/sql_news.db.
