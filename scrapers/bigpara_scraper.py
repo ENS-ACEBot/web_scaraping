@@ -6,6 +6,7 @@ from datetime import datetime
 from common.new_class import News  # Assumes News has static method date_time_to_dateTime, to_dict(), and from_dict()
 from scrapers.abstract_news_scraper import AbstractNewsScraper
 import time
+import threading
 
 
 class BigparaNewsScraper(AbstractNewsScraper):
@@ -199,9 +200,23 @@ class BigparaNewsScraper(AbstractNewsScraper):
                     logging.error(f"Error fetching content for news index {index} URL {news.news_url}: {ex}")
                     break
                 
+        thread_count = 0
+        threads = []
         for idx, news in enumerate(news_list):
             logging.debug(f"Fetching content for news {idx + 1}/{total}: {news.title}")
-            fetch_and_update(news, idx)
+            #fetch_and_update(news, idx)
+            
+            thread = threading.Thread(target=fetch_and_update, args=(news, idx))
+            threads.append(thread)
+            thread.start()
+            thread_count += 1
+            
+            if(thread_count == len(news_list) - 1 or thread_count == 30):
+                for t in threads:
+                    t.join()
+                thread_count = 0
+                threads = []
+                break
 
         # remove the news without content 
         news_list = [news for news in news_list if news.content]
