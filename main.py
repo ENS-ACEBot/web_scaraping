@@ -2,6 +2,7 @@ from scrapers.abstract_news_scraper import AbstractNewsScraper
 from scrapers.mynet_scraper import MynetNewsScraper 
 from scrapers.kap_scraper import KapNewsScraper
 from scrapers.bigpara_scraper import BigparaNewsScraper
+from scrapers.anadolu_ajansi_scraper import AnadoluAjansiScraper
 from database.types.sqllite_news_database import SQLLiteNewsDatabase
 import logging
 import datetime
@@ -69,6 +70,8 @@ def run_scrapers_in_threads(scrapers, databases):
     '''
     This function runs the scrapers in separate threads.
     '''
+    logging.info("Running scrapers in separate threads.")
+    
     threads = []
     for idx,scraper in enumerate(scrapers):
         thread = threading.Thread(target=scrape_and_save, args=(scraper, databases[idx]))
@@ -77,6 +80,7 @@ def run_scrapers_in_threads(scrapers, databases):
     
     for thread in threads:
         thread.join()
+    logging.info("Running scrapers in separate threads end.")
         
 if __name__ == "__main__":
     
@@ -118,8 +122,10 @@ if __name__ == "__main__":
     logging.info(f"scrape_period_seconds = {scrape_period_seconds}")
     
     # create database object
-    databases = [SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path)]
-    scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper()]
+    databases = [SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path)]
+    
+    # create scraper objects
+    scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper(), AnadoluAjansiScraper()]
     
     # function to update the schedule (period time)
     def update_schedule():
