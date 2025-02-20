@@ -10,14 +10,16 @@ class SQLLiteNewsDatabase():
 
     def __init__(self, db_path: str):
         self.db_path = db_path
-        self.connection = sqlite3.connect(self.db_path)
+        self.connection = sqlite3.connect(self.db_path, check_same_thread=False)
         self.cursor = self.connection.cursor()
         self.create_table()
         logging.info("SQLLite database initialized")
      
-    def save_news(self, news_list: list[News]):
+    
+    def save_news(self, news_list: list[News]) -> list[News]:
         '''
             Save a list of news to the database.
+            Return saved news list.
         '''
         insert_query = '''
         INSERT INTO news(title, content,date_time,source,news_url) 
@@ -29,19 +31,23 @@ class SQLLiteNewsDatabase():
             self.cursor.executemany(insert_query, news_data)
             self.connection.commit()
             logging.info(f"Saved {len(news_list)} news to the database.")
+            return news_list
         except sqlite3.IntegrityError as e:
+            saved_news = []
             logging.error(f"An error occurred while saving news to the database: {e}")
             self.connection.rollback()
             # Save each news one by one in case of error
             logging.error("Trying to save each news one by one...")
             for idx,news in enumerate(news_list):
                 logging.info(f"{idx+1}/{len(news_list)}")
-                self.save_new(news)
+                saved_new = self.save_new(news)
+                if saved_new:
+                    saved_news.append(news)
+            return saved_news
         except sqlite3.Error as e:
             logging.error(f"An error occurred while saving news to the database: {e}")
             self.connection.rollback()  # Rollback the transaction in case of error
-            return False
-        return True
+            return []
 
     def save_new(self, news: News):
         '''
@@ -56,9 +62,11 @@ class SQLLiteNewsDatabase():
             self.cursor.execute(insert_query, news_data)
             self.connection.commit()
             logging.info(f"Saved {news.news_url} to the database.")
+            return news
         except sqlite3.Error as e:
             logging.debug(f"An error occurred while saving news to the database: {e}")
             self.connection.rollback()
+            return None
                        
     def get_all(self) -> list[News]:
         select_query = "SELECT title, content,date_time,source,news_url FROM news;"

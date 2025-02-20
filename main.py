@@ -11,10 +11,15 @@ import time
 from logging.handlers import RotatingFileHandler
 import os
 import json
+import threading
 
 total_saved_run = 0
 
-def scrape_and_save(database: SQLLiteNewsDatabase):
+
+def scrape_and_save(scraper: AbstractNewsScraper,database: SQLLiteNewsDatabase):
+    '''
+    This function scrapes news from the given scraper and saves them to the database.
+    '''
     try:
         # today's date
         fetching_date = datetime.datetime.now()
@@ -24,51 +29,33 @@ def scrape_and_save(database: SQLLiteNewsDatabase):
         # preapre date to proper string format
         fetching_date_str = fetching_date.strftime(date_format)
         
-        # add scrapers to list
-        scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper()]
-
-        all_news = []
+        logging.info(f"Scraping data from {scraper.source} : interval {fetching_date_str}")
         
-        past_news_count = database.count_news()
+        scraper_news = scraper.scrape_time_interval(start_date=fetching_date_str, end_date=fetching_date_str)
         
-        for scraper in scrapers:
-            logging.info(f"Scraping data from {scraper.source} : interval {fetching_date_str}")
-            
-            scraper_news = scraper.scrape_time_interval(start_date=fetching_date_str, end_date=fetching_date_str)
-            
-            # get the last news for source and filter the news that are already in the database (earlier than the last news)
-            last_news = database.get_query(source=scraper.source, limit=1)
-            if last_news:
-                last_news = last_news[0]
-                logging.info(50*"-")
-                logging.info(f"Last news in the database for {scraper.source} : {last_news.date_time}")
-                logging.info(50*"-")
-                # filter the news that are already in the database
-                scraper_news = [news for news in scraper_news if news.date_time >= last_news.date_time]
-            else :
-                logging.info(f"No news found in the database for {scraper.source}")
-            
-            all_news.extend(scraper_news)
-            
-            logging.info(50*"-")
-            logging.info(f"Scraped {len(scraper_news)} news from {scraper.source}")
-            logging.info(50*"-")
-            
-            database.save_news(scraper_news)
+        # get the last news for source and filter the news that are already in the database (earlier than the last news)
+        last_news = database.get_query(source=scraper.source, limit=1)
+        if last_news:
+            last_news = last_news[0]
+            logging.info(f"Last news time in the database for {scraper.source} : {last_news.date_time}")
+            # filter the news that are already in the database
+            scraper_news = [news for news in scraper_news if news.date_time >= last_news.date_time]
+        else :
+            logging.info(f"No news found in the database for {scraper.source}")
         
-        current_news_count = database.count_news()
-        
-        logging.info(50*"-")
-        logging.info(f"Scraped total {len(all_news)} news articles.")
-        logging.info(f"Added new {current_news_count - past_news_count} news articles to the database.")
-        logging.info(f"Current total news count in the database : {current_news_count}")
-        logging.info(50*"-")
+        saved_news = database.save_news(scraper_news)
+                
+        logging.info(f"Scraped total {len(scraper_news)} news articles from {scraper.source}. ")
+        logging.info(f"Saved {len(saved_news)} news articles from {scraper.source}.")
         
         
     except Exception as e:
-        logging.error(f"An error occurred while scraping and saving news: {e}")
+        logging.error(f"({scraper.source})An error occurred while scraping and saving news: {e}")
 
 def read_config():
+    '''
+    This function reads the configuration file and returns the configuration as a dictionary.
+    '''
     try:
         with open("env/config.json", "r") as config_file:
             config = json.load(config_file)
@@ -78,6 +65,19 @@ def read_config():
     return config
 
 
+def run_scrapers_in_threads(scrapers, databases):
+    '''
+    This function runs the scrapers in separate threads.
+    '''
+    threads = []
+    for idx,scraper in enumerate(scrapers):
+        thread = threading.Thread(target=scrape_and_save, args=(scraper, databases[idx]))
+        threads.append(thread)
+        thread.start()
+    
+    for thread in threads:
+        thread.join()
+        
 if __name__ == "__main__":
     
     # Save the PID to a file
@@ -118,7 +118,8 @@ if __name__ == "__main__":
     logging.info(f"scrape_period_seconds = {scrape_period_seconds}")
     
     # create database object
-    database = SQLLiteNewsDatabase(db_file_path)
+    databases = [SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path)]
+    scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper()]
     
     # function to update the schedule (period time)
     def update_schedule():
@@ -127,12 +128,12 @@ if __name__ == "__main__":
         if new_period_time_seconds != scrape_period_seconds:
             logging.info(f"Updating schedule period time to {new_period_time_seconds} seconds.")
             schedule.clear()
-            schedule.every(new_period_time_seconds).seconds.do(scrape_and_save, database=database)
+            schedule.every(new_period_time_seconds).seconds.do(run_scrapers_in_threads,scrapers=scrapers, databases=databases)
             return new_period_time_seconds
         return scrape_period_seconds
     
     # run the function every 5 minutes, send parameter to the function (initial schedule)
-    schedule.every(scrape_period_seconds).seconds.do(scrape_and_save, database = database)
+    schedule.every(scrape_period_seconds).seconds.do(run_scrapers_in_threads,scrapers = scrapers, databases = databases)
     
     while True:
         schedule.run_pending()
