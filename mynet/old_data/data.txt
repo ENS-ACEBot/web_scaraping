@@ -1,7 +1,0 @@
-duplicate_count 1st: 112950
-duplicated_dict 1st: 30
-combined_dict 1st: 5997
-Same news count: 167116
-Different news count: 77567
-File1 news count: 118947, File2 news count: 125736
-New merged news count: 77567

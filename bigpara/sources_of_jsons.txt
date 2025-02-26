@@ -1,4 +1,0 @@
-{
-    "bigpara_borsa_news.json" : https://bigpara.hurriyet.com.tr/borsa/haber/
-    
-}

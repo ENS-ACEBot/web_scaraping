@@ -1,31 +1,15 @@
 # Database
 psycopg2
-sqlite3
 
 # Web scraping
 requests
 beautifulsoup4
-
-# Logging
-logging
 
 # Scheduling
 schedule
 
 # Date and time handling
 pytz
-
-# JSON handling
-json
-
-# Typing
-typing
-
-# Unit testing
-unittest
-
-# Data classes
-dataclasses
 
 # Asyncio
 asyncio
