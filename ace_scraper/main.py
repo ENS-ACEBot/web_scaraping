@@ -19,6 +19,15 @@ import threading
 total_saved_run = 0
 CONFIG_FILE_PATH = "ace_scraper/env/config.json"
 
+'''
+TodoList:
+- [ ] log the initialization of the redis message queue
+- [ ] log the succesfull message sending
+- [ ] fix the readme file
+'''
+
+
+
 def scrape_and_save_send_to_message_queue(scraper: AbstractNewsScraper,database: SQLLiteNewsDatabase, message_queue: RedisMessageQueueManager):
     '''
     This function scrapes news from the given scraper and saves them to the database.
