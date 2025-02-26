@@ -4,6 +4,7 @@ from scrapers.kap_scraper import KapNewsScraper
 from scrapers.bigpara_scraper import BigparaNewsScraper
 from scrapers.anadolu_ajansi_scraper import AnadoluAjansiScraper
 from database.sqllite_news_database import SQLLiteNewsDatabase
+from message_queue.RedisMessageQueue import RedisMessageQueueManager
 import os
 import logging
 import datetime
@@ -18,7 +19,7 @@ import threading
 total_saved_run = 0
 CONFIG_FILE_PATH = "ace_scraper/env/config.json"
 
-def scrape_and_save(scraper: AbstractNewsScraper,database: SQLLiteNewsDatabase):
+def scrape_and_save_send_to_message_queue(scraper: AbstractNewsScraper,database: SQLLiteNewsDatabase, message_queue: RedisMessageQueueManager):
     '''
     This function scrapes news from the given scraper and saves them to the database.
     '''
@@ -46,7 +47,12 @@ def scrape_and_save(scraper: AbstractNewsScraper,database: SQLLiteNewsDatabase):
             logging.info(f"No news found in the database for {scraper.source}")
         
         saved_news = database.save_news(scraper_news)
-                
+        
+        saved_news_json = [news.to_dict() for news in saved_news]
+        
+        for news in saved_news_json:
+            message_queue.send_message(news)
+                                
         logging.info(f"Scraped total {len(scraper_news)} news articles from {scraper.source}. ")
         logging.info(f"Saved {len(saved_news)} news articles from {scraper.source}.")
         
@@ -67,7 +73,7 @@ def read_config():
     return config
 
 
-def run_scrapers_in_threads(scrapers, databases):
+def run_scrapers_in_threads(scrapers, databases, message_queue):
     '''
     This function runs the scrapers in separate threads.
     '''
@@ -75,7 +81,7 @@ def run_scrapers_in_threads(scrapers, databases):
     
     threads = []
     for idx,scraper in enumerate(scrapers):
-        thread = threading.Thread(target=scrape_and_save, args=(scraper, databases[idx]))
+        thread = threading.Thread(target=scrape_and_save_send_to_message_queue, args=(scraper, databases[idx], message_queue))
         threads.append(thread)
         thread.start()
     
@@ -135,6 +141,9 @@ if __name__ == "__main__":
     # create database object
     databases = [SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path),SQLLiteNewsDatabase(db_file_path)] #,SQLLiteNewsDatabase(db_file_path)]
     
+    # create redis message queue object
+    message_queue = RedisMessageQueueManager()
+    
     # create scraper objects
     scrapers = [MynetNewsScraper(), KapNewsScraper(), BigparaNewsScraper()] #, AnadoluAjansiScraper()]
     
@@ -145,12 +154,12 @@ if __name__ == "__main__":
         if new_period_time_seconds != scrape_period_seconds:
             logging.info(f"Updating schedule period time to {new_period_time_seconds} seconds.")
             schedule.clear()
-            schedule.every(new_period_time_seconds).seconds.do(run_scrapers_in_threads,scrapers=scrapers, databases=databases)
+            schedule.every(new_period_time_seconds).seconds.do(run_scrapers_in_threads,scrapers=scrapers, databases=databases, message_queue = message_queue)
             return new_period_time_seconds
         return scrape_period_seconds
     
     # run the function every 5 minutes, send parameter to the function (initial schedule)
-    schedule.every(scrape_period_seconds).seconds.do(run_scrapers_in_threads,scrapers = scrapers, databases = databases)
+    schedule.every(scrape_period_seconds).seconds.do(run_scrapers_in_threads,scrapers = scrapers, databases = databases,message_queue = message_queue)
     
     while True:
         schedule.run_pending()

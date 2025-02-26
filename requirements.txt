@@ -21,3 +21,6 @@ matplotlib
 
 # Character encoding detection
 chardet
+
+# Redis
+redis

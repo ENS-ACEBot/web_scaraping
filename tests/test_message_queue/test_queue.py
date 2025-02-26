@@ -10,7 +10,7 @@ class TestRedisMessageQueueManager(unittest.TestCase):
         Here, we instantiate our queue manager.
         Make sure Redis is running at localhost:6379 for this test.
         """
-        self.queue_manager = RedisMessageQueueManager(host='localhost', port=6379, db=0)
+        self.queue_manager = RedisMessageQueueManager(host='localhost', port=6379, db=0, queue_name='test_queue')
         # You can also use a dedicated test DB like db=1 to avoid collisions with real data.
 
     def tearDown(self):
@@ -35,13 +35,13 @@ class TestRedisMessageQueueManager(unittest.TestCase):
 
         # Start a thread that listens for messages on 'test_queue'
         listener_thread = threading.Thread(
-            target=lambda: self.queue_manager.listen_messages("test_queue", callback),
+            target=lambda: self.queue_manager.listen_messages(callback),
             daemon=True  # Daemon so it won't block shutdown
         )
         listener_thread.start()
 
         test_message = {"text": "Hello, unittest!"}
-        self.queue_manager.send_message("test_queue", test_message)
+        self.queue_manager.send_message(test_message)
 
         # Wait briefly to let the listener process the message
         time.sleep(1)
@@ -60,13 +60,13 @@ class TestRedisMessageQueueManager(unittest.TestCase):
             self.received_messages.append(message)
 
         listener_thread = threading.Thread(
-            target=lambda: self.queue_manager.listen_messages("my_string_queue", callback),
+            target=lambda: self.queue_manager.listen_messages(callback),
             daemon=True
         )
         listener_thread.start()
 
         test_message = "Simple string message"
-        self.queue_manager.send_message("my_string_queue", test_message)
+        self.queue_manager.send_message(test_message)
 
         time.sleep(1)
 
