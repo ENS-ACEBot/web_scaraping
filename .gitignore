@@ -16,10 +16,11 @@ Thumbs.db
 
 # Virtual environment
 venv/
-
+.venv/
 
 # Distribution / packaging
 env/
+config.json
 
 # pid file
 *.pid
