@@ -1,0 +1,26 @@
+# Database
+psycopg2
+
+# Web scraping
+requests
+beautifulsoup4
+
+# Scheduling
+schedule
+
+# Date and time handling
+pytz
+
+# Asyncio
+asyncio
+aiohttp
+
+# Pandas and Matplotlib for data analysis and visualization
+pandas
+matplotlib
+
+# Character encoding detection
+chardet
+
+# Redis
+redis

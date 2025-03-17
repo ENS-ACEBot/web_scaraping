@@ -1,0 +1,29 @@
+__pycache__/
+*.pyc
+.env
+
+# Database
+data/
+*.db
+
+# Logs
+logs/
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
+.venv/
+
+# Distribution / packaging
+env/
+config.json
+
+# pid file
+*.pid
+
+# nohubout file 
+nohup.out
