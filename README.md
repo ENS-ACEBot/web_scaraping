@@ -37,10 +37,10 @@ pip install -r requirements.txt
 ```
 
 ## Running the Scraper
+- go to the ace_scraper folder then run
 - The script can be runned in background task, 
 -- nohub will be used to run task in background even terminal window is closed
 -- pid of program will be saved to process.pid file
-
 - check if the process is running
 ```sh
 ps -p $(cat process.pid)
