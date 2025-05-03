@@ -12,7 +12,7 @@ import common.bist_50 as bist_50
 from common.new_class import News
 
 
-DISCLOSURE_INTERVAL_ENDPOINT = "https://www.kap.org.tr/tr/api/memberDisclosureQuery"
+DISCLOSURE_INTERVAL_ENDPOINT = "https://www.kap.org.tr/tr/api/disclosure/members/byCriteria"
 # usage = post request 
 # body : { toDate: "%Y-%m-%d", fromDate: "%Y-%m-%d" }
 DISCLOSURE_BY_INDEX_ENDPOINT = "https://www.kap.org.tr/tr/Bildirim/"

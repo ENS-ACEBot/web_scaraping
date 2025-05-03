@@ -55,18 +55,33 @@ class KapNews:
                 date_str = date_str.replace("Dün", (datetime.now() - timedelta(days=1)).strftime("%d.%m.%y"))
             elif "Bugün" in date_str:
                 date_str = date_str.replace("Bugün", datetime.now().strftime("%d.%m.%y"))
-            return datetime.strptime(date_str, "%d.%m.%y %H:%M")
+            return KapNews.parse_date_time(date_str) if date_str else None
         except ValueError as e:
             print(f"Error parsing date: {e}")
             return None
 
+    @classmethod
+    def parse_date_time(self, date_time_str):
+        if isinstance(date_time_str, datetime):
+            return date_time_str
+        
+        if date_time_str is None:
+            return None
+        
+        for date_format in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M"]:
+            try:
+                return datetime.strptime(date_time_str, date_format)
+            except ValueError :
+                print(f"Date format of '{date_time_str}' is not supported.,type = {type(date_time_str)}")
+                continue
+        raise ValueError(f"Date format of '{date_time_str}' is not supported.")
+    
     @classmethod
     def from_dict(cls, data: Dict[str, Any]):
         """
         Convert a dictionary to a KapNews object.
         Handles the date conversion for publishDate.
         """
-        date_format = "%d.%m.%y %H:%M"  # Date format in the given JSON
         return cls(
             publish_date=cls.special_strptime(data["publishDate"]) if data.get("publishDate") else None,
             kap_title=data.get("kapTitle"),
