@@ -25,7 +25,7 @@ class News:
             try:
                 return datetime.strptime(date_time_str, date_format)
             except ValueError :
-                print(f"Date format of '{date_time_str}' is not supported.,type = {type(date_time_str)}")
+                # print(f"Date format of '{date_time_str}' is not supported.,type = {type(date_time_str)}")
                 continue
         raise ValueError(f"Date format of '{date_time_str}' is not supported.")
     
@@ -36,7 +36,7 @@ class News:
         return {
             "title": self.title,
             "content": self.content if self.content else "",
-            "date_time": self.date_time.strftime(self.output_date_format),
+            "date_time": self.date_time.strftime(self.output_date_format) if self.date_time else None,
             "source": self.source,
             "news_url": self.news_url,
         }

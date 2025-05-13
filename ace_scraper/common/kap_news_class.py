@@ -68,11 +68,11 @@ class KapNews:
         if date_time_str is None:
             return None
         
-        for date_format in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M"]:
+        for date_format in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%d.%m.%y %H:%M:%S", "%d.%m.%y %H:%M"]:
             try:
                 return datetime.strptime(date_time_str, date_format)
             except ValueError :
-                print(f"Date format of '{date_time_str}' is not supported.,type = {type(date_time_str)}")
+                # print(f"Date format of '{date_time_str}' is not supported.,type = {type(date_time_str)}")
                 continue
         raise ValueError(f"Date format of '{date_time_str}' is not supported.")
     

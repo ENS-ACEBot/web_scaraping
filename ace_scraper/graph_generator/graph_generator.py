@@ -62,7 +62,7 @@ def main():
 
     plot_bar_chart(
         source_counts,
-        'Number of News News per Source',
+        'Number of News per Source',
         'Source',
         'Number of News',
         'news_per_source.png'
@@ -70,7 +70,7 @@ def main():
 
     plot_bar_chart(
         year_counts,
-        'Number of News News per Year',
+        'Number of News per Year',
         'Year',
         'Number of News',
         'news_per_year.png'
