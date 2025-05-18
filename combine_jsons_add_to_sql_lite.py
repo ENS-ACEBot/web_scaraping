@@ -2,7 +2,9 @@ import os
 import json
 import sqlite3
 
-def create_database(db_path='news.db'):
+DATABASE_PATH = 'ace_scraper/data/sql_news.db'
+
+def create_database(db_path=DATABASE_PATH):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute('''
@@ -18,7 +20,7 @@ def create_database(db_path='news.db'):
     conn.commit()
     conn.close()
 
-def insert_news(news_list, db_path='news.db'):
+def insert_news(news_list, db_path=DATABASE_PATH):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     for news in news_list:
@@ -82,9 +84,11 @@ def read_news_from_file(file_path):
 def main():
 
     create_database()
-    news_data = read_news_from_folder("/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/old_scrapers/kap/data_with_content_bist50_general_class")
-    news_data += read_news_from_file("/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/old_scrapers/mynet/data/mynet_news_combined.json")
-    news_data += read_news_from_file("/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/old_scrapers/bigpara/bigpara_combined.json")
+    news_data = []
+    # news_data = read_news_from_folder("/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/old_scrapers/kap/data_with_content_bist50_general_class")
+    # news_data += read_news_from_file("/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/old_scrapers/mynet/data/mynet_news_combined.json")
+    # news_data += read_news_from_file("/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/old_scrapers/bigpara/bigpara_combined.json")
+    news_data += read_news_from_file("/Users/burakersoz/Desktop/Sabanci_2024_Fall/ENS491/webscraping/old_scrapers/bloomberg/bloomberg_news.json")
     
     if news_data:
         insert_news(news_data)
