@@ -86,18 +86,11 @@ The configuration for the news scraper is stored in the `ace_scraper/env/config.
     "log_file_path": "logs/news_scraper.log",
     "db_file_path": "data/sql_news.db",
     "scrape_period_seconds": 10,
-    "database": {
-        "type": "sqlite",  // or "postgresql"
-        "host": "localhost",
-        "port": 5432,
-        "database": "news_db",
-        "user": "user",
-        "password": "password"
-    },
-    "redis": {
-        "host": "localhost",
-        "port": 6379
-    }
+
+    "redis_host" : "localhost",
+    "redis_port" : 6379,
+    "redis_db" : 0,
+    "redis_news_message_queue" : "news_queue"
 }
 ```
 
