@@ -68,7 +68,7 @@ class KapNews:
         if date_time_str is None:
             return None
         
-        for date_format in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%d.%m.%y %H:%M:%S", "%d.%m.%y %H:%M"]:
+        for date_format in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%M"]:
             try:
                 return datetime.strptime(date_time_str, date_format)
             except ValueError :

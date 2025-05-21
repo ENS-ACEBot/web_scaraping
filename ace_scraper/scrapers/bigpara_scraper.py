@@ -166,7 +166,8 @@ class BigparaNewsScraper(AbstractNewsScraper):
                 try:
                     response = requests.get(news.news_url)
                     response.raise_for_status()
-                    soup = BeautifulSoup(response.content, 'html.parser')
+                    html = response.content.decode('utf-8', errors='ignore')
+                    soup = BeautifulSoup(html, 'html.parser')
                                     
                     # news' header information
                     header_element = soup.find(class_="news-content__inf").find("h2").text

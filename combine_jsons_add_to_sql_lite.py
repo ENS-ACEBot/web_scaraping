@@ -12,7 +12,7 @@ def create_database(db_path=DATABASE_PATH):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT,
             content TEXT,
-            date TEXT,
+            date_time TEXT,
             source TEXT,
             news_url TEXT
         )
@@ -26,7 +26,7 @@ def insert_news(news_list, db_path=DATABASE_PATH):
     for news in news_list:
         title = news.get('title')
         content = news.get('content')
-        date = news.get('date_time')
+        date_time = news.get('date_time')
         source = news.get('source')
         news_url = news.get('news_url')
 
@@ -37,9 +37,9 @@ def insert_news(news_list, db_path=DATABASE_PATH):
             content = json.dumps(content)
 
         cursor.execute('''
-            INSERT INTO news (title, content, date, source,news_url)
+            INSERT INTO news (title, content, date_time, source,news_url)
             VALUES (?, ?, ?, ?, ?)
-        ''', (title, content, date, source,news_url))
+        ''', (title, content, date_time, source,news_url))
     conn.commit()
     conn.close()
 

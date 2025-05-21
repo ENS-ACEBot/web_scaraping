@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 import json
 import os
-from new_class import News
+from common.new_class import News
 
 class NewsDatabase(ABC):
     """

@@ -51,7 +51,7 @@ def scrape_and_save_send_to_message_queue(scraper: AbstractNewsScraper,database:
             last_news = last_news[0]
             logging.info(f"Last news time in the database for {scraper.source} : {last_news.date_time}")
             # filter the news that are already in the database
-            scraper_news = [news for news in scraper_news if news.date_time >= last_news.date_time]
+            scraper_news = [news for news in scraper_news if news.date_time >= last_news.date_time and news.title != last_news.title]
         else :
             logging.info(f"No news found in the database for {scraper.source}")
         
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     # period time 
     scrape_period_seconds = config.get("scrape_period_seconds", 10)
     
-    setup_logging(log_file_path, file_log_level=logging.INFO, console_log_level=logging.DEBUG)
+    setup_logging(log_file_path, file_log_level=logging.INFO, console_log_level=logging.INFO)
     
     logging.info("News scraper started.")
     logging.info(f"logfile = {log_file_path}")

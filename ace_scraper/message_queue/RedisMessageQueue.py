@@ -29,9 +29,11 @@ class RedisMessageQueueManager:
             message (dict or str): The message to send. If it's a dict, it will be converted to JSON.
         """
         if isinstance(message, dict):
-            message = json.dumps(message)
+            message = json.dumps(message, ensure_ascii=False)
         self.redis.lpush(self.queue_name, message)
+        logging.info("=========REDIS MESSAGE QUEUE=========")
         logging.info("Message sent to queue '%s': %s", self.queue_name, message)
+        logging.info("=====================================")
     
     def listen_messages(self, callback):
         """
