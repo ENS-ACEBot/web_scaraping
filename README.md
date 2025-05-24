@@ -7,7 +7,6 @@ This project is a news scraper that collects news articles from various sources 
 - https://bigpara.hurriyet.com.tr/
 - https://finans.mynet.com/
 - https://www.bloomberght.com/
-- https://www.aa.com.tr/
 
 ## Features
 - Scrapes news articles from multiple sources for given time interval
@@ -50,31 +49,13 @@ mkdir -p ace_scraper/env ace_scraper/logs ace_scraper/data ace_scraper/pid
 
 ## Running the Scraper
 
-### Using Docker
-```sh
-docker-compose up -d
-```
-
 ### Manual Setup
-1. Navigate to the ace_scraper directory:
+
+1. Start the scraper:
 ```sh
-cd ace_scraper
+python3 ace_scraper/main.py &
 ```
 
-2. Start the scraper in the background:
-```sh
-nohup python3 main.py &
-```
-
-3. Check if the process is running:
-```sh
-ps -p $(cat pid/process.pid)
-```
-
-4. Stop the process:
-```sh
-kill $(cat pid/process.pid)
-```
 
 ## Configuration
 
@@ -114,10 +95,3 @@ ace_scraper/
 └── common/            # Shared utilities
 ```
 
-## Historical Data
-Historical news data is available at:
-https://drive.google.com/drive/folders/1abdh1h5vi87vGi30_9c_CEC6ta4EOkjS?usp=sharing
-
-## Development
-- Run tests: `python -m pytest tests/`
-- Check code style: `flake8 ace_scraper/`
